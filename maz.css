@@ -1,0 +1,25 @@
+.form-container {
+    max-width: 400px;
+    margin-bottom: 30px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.form-row label {
+    width: 150px; /* largeur fixe pour l’alignement */
+    font-weight: bold;
+}
+
+.form-row input {
+    flex: 1;
+    padding: 6px;
+}
+
+.form-row button {
+    margin-left: 150px; /* aligné avec les champs */
+    padding: 8px 16px;
+}
