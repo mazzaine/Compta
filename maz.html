@@ -42,6 +42,7 @@
     <span class="tab-btn" onclick="switchTab('journal')">📘 Journal comptable</span>
 </div>
 
+<!-- ============================ LISTE DES FACTURES ============================ -->
 <div id="factures" class="tab-content active">
     <div class="form-container" id="form-container">
         <label>Journal :</label>
@@ -78,23 +79,26 @@
         <input type="text" id="recherche-facture" onkeyup="filtrerFactures()" placeholder="Rechercher...">
     </div>
 
-    <table id="table-achats">
-        <thead>
-            <tr>
-                <th>Journal</th>
-                <th>Date</th>
-                <th>Fournisseur / Client</th>
-                <th>Compte</th>
-                <th>Montant HT</th>
-                <th>TVA</th>
-                <th>TTC</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+   <table id="table-achats">
+  <thead>
+    <tr>
+      <th>N° Pièce</th>
+      <th>Journal</th> 
+      <th>Date</th>    
+      <th>Fournisseur / Client</th>
+      <th class="col-facture">Numéro de facture</th>
+      <th>Compte Comptable</th>
+      <th>Montant HT</th>
+      <th>TVA</th>
+      <th>TTC</th>
+      <th>Actions</th>     
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
 </div>
 
+<!-- ============================ JOURNAL COMPTABLE ============================ -->
 <div id="journal" class="tab-content">
     <div style="margin-top:20px;">
         <label>Filtrer par compte/libellé :</label>
@@ -104,9 +108,12 @@
     <table id="table-ecritures">
         <thead>
             <tr>
+                <th>N° Pièce</th>
+                <th>Journal</th>
                 <th>Date</th>
-                <th>Compte</th>
-                <th>Libellé</th>
+                <th>Fournisseur / Client</th>
+                <th>Numéro de facture</th>
+                <th>Compte Comptable</th>
                 <th>Débit</th>
                 <th>Crédit</th>
             </tr>
@@ -115,6 +122,7 @@
     </table>
 </div>
 
+<!-- ============================ SCRIPT ============================ -->
 <script>
 function switchTab(tabId) {
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -133,1907 +141,287 @@ function afficherChamps() {
         html += `
             <label>Fournisseur / Client :</label><input type="text" id="fournisseur-achat">
             <label>Compte Comptable :</label><input list="plan-comptable" id="compte-comptable">
-            <datalist id="plan-comptable">
+            <datalist id="plan-comptable"> 
                  <option value="111."> Capital social ou personnel</option>
- <option value="1111."> Capital social</option>
- <option value="1112."> Fonds de dotation</option>
- <option value="1117."> Capital personnel</option>
- <option value=" 11171."> Capital individuel</option>
- <option value=" 11175."> Compte de l'exploitant</option>
- <option value="1119."> Actionnaires, capital souscrit-non appelé</option>
- <option value="112."> Primes d'émission, de fusion et d'apport</option>
- <option value="1121."> Primes d'émission</option>
- <option value="1122."> Primes de fusion</option>
- <option value="1123."> Primes d'apport</option>
- <option value="113."> Ecarts de réévaluation</option>
- <option value="1130."> Ecarts de réévaluation</option>
- <option value="114."> Réserve légale</option>
- <option value="1140."> Réserve légale</option>
- <option value="115."> Autres réserves</option>
- <option value="1151."> Réserves statutaires ou contractuelles</option>
- <option value="1152."> Réserves facultatives</option>
- <option value="1155."> Réserves réglementées</option>
- <option value="116."> Report à nouveau</option>
- <option value="1161."> Report à nouveau (solde créditeur)</option>
- <option value="1169."> Report à nouveau (solde débiteur)</option>
- <option value="118."> Résultats nets en instance d'affectation</option>
- <option value="1181."> Résultats nets en instance d'affectation (solde créditeur)</option>
- <option value="1189."> Résultats nets en instance d'affectation (solde débiteur)</option>
- <option value="119."> Résultat net de l'exercice</option>
- <option value="1191."> Résultat net de l'exercice (solde créditeur)</option>
- <option value="1199."> Résultat net de l'exercice (solde débiteur)</option>
- <option value=" 13."> Capitaux propres assimilés</option>
- <option value="131."> Subventions d'investissement</option>
- <option value="1311."> Subventions d'investissement reçues</option>
- <option value="1319."> Subventions d'investissement inscrites au CPC</option>
- <option value="135."> Provisions réglementées</option>
- <option value="1351."> Provisions pour amortissements dérogatoires</option>
- <option value="1352."> Provisions pour plus-values en instance d'imposition</option>
- <option value="1354."> Provisions pour investissements</option>
- <option value="1355."> Provisions pour reconstitution des gisements</option>
- <option value="1356."> Provisions pour acquisition et construction de logements</option>
- <option value="1358."> Autres provisions réglementées</option>
- <option value=" 14."> Dettes de financement</option>
- <option value="141."> Emprunts obligataires</option>
- <option value="1410."> Emprunts obligataires</option>
- <option value="148."> Autres dettes de financement</option>
- <option value="1481."> Emprunts auprès des établissements de crédit</option>
- <option value="1482."> Avances de l'Etat</option>
- <option value="1483."> Dettes rattachées à des participations</option>
- <option value="1484."> Billets de fonds</option>
- <option value="1485."> Avances reçues et comptes courants bloqués</option>
- <option value="1486."> Fournisseurs d'immobilisation</option>
- <option value="1487."> Dépôts et cautionnements reçues</option>
- <option value="1488."> Dettes de financement diverses</option>
- <option value="15."> Provisions durables pour risques et charges</option>
- <option value="151."> Provisions pour risques</option>
- <option value="1511."> Provisions pour litiges</option>
- <option value="1512."> Provisions pour garanties données aux clients</option>
- <option value="1513."> Provisions pour propre assureur</option>
- <option value="1514."> Provision pour pertes sur marchés à terme</option>
- <option value="1515."> Provisions pour amendes, double droits, pénalités</option>
- <option value="1516."> Provisions pour pertes de change</option>
- <option value="1518."> Autres provisions pour risques</option>
- <option value="155."> Provisions pour charges</option>
- <option value="1551."> Provisions pour impôts</option>
- <option value="1552."> Provisions pour pensions de retraite et obligations similaires</option>
- <option value="1555."> Provisions pour charges à répartir sur plusieurs exercices</option>
- <option value="1558."> Autres provisions pour charges</option>
- <option value="16."> Comptes de liaison des établissements et succursales</option>
- <option value="160."> Comptes de liaison des établissements et succursales</option>
- <option value="1601."> Comptes de liaison du siège</option>
- <option value="1605."> Comptes de liaison des établissements</option>
- <option value="17."> Ecarts de conversion - Passif</option>
- <option value="171."> Augmentation des créances immobilisées</option>
- <option value="1710."> Augmentation des créances immobilisées</option>
- <option value="172."> Diminution des dettes de financement</option>
- <option value="1720."> Diminution des dettes de financement</option>
- <option value="21."> Immobilisations en non-valeurs</option>
- <option value="211."> Frais préliminaires</option>
- <option value="2111."> Frais de constitution</option>
- <option value="2112."> Frais préalables au démarrage</option>
- <option value="2113."> Frais d'augmentation du capital</option>
- <option value="2114."> Frais sur opérations de fusions, scissions et transformations</option>
- <option value="2116."> Frais de prospection</option>
- <option value="2117."> Frais de publicité</option>
- <option value="2118."> Autres frais préliminaires</option>
- <option value="212."> Charges à répartir sur plusieurs exercices</option>
- <option value="2121."> Frais d'acquisition des immobilisations</option>
- <option value="2125."> Frais d'émission des emprunts</option>
- <option value="2128."> Autres charges à répartir</option>
- <option value="213."> Primes de remboursement des obligations</option>
- <option value="2130."> Primes de remboursement des obligations</option>
- <option value="22."> Immobilisations incorporelles</option>
- <option value="221."> Immobilisation en recherche et développement</option>
- <option value="2210."> Immobilisation en recherche et développement</option>
- <option value="2220."> Brevets, marques, droits et valeurs similaires</option>
- <option value="223."> Fonds commercial</option>
- <option value="2230."> Fonds commercial</option>
- <option value="228."> Autres immobilisations incorporelles</option>
- <option value="2285."> Autres immobilisations incorporelles</option>
- <option value="23."> Immobilisations corporelles</option>
- <option value="231."> Terrains</option>
- <option value="2311."> Terrains nus</option>
- <option value="2312."> Terrains aménagés</option>
- <option value="2313."> Terrains bâtis</option>
- <option value="2314."> Terrains de gisement</option>
- <option value="2316."> Agencements et aménagements de terrains</option>
- <option value="2318."> Autres terrains</option>
- <option value="232."> Constructions</option>
- <option value="2321."> Bâtiments</option>
- <option value=" 23211."> Bâtiments industriels (A, B …)</option>
- <option value=" 23214."> Bâtiments administratifs et commerciaux (A, B …)</option>
- <option value=" 23218."> Autres bâtiments</option>
- <option value="2323."> Constructions sur terrains d'autrui</option>
- <option value="2325."> Ouvrages d'infrastructure</option>
- <option value="2327."> Agencements et aménagements des constructions</option>
- <option value="2328."> Autres constructions</option>
- <option value="233."> Installations techniques, matériel et outillage</option>
- <option value="2331."> Installations techniques</option>
- <option value="2332."> Matériel et outillage</option>
- <option value=" 23321."> Matériel</option>
- <option value=" 23324."> Outillage</option>
- <option value="2333."> Emballages récupérables identifiables</option>
- <option value="2338."> Autres installations techniques, matériel et outillage</option>
- <option value="234."> Matériel de transport</option>
- <option value="2340."> Matériel de transport</option>
- <option value="235."> Mobilier, matériel de bureau et aménagements divers</option>
- <option value="2351."> Mobilier de bureau</option>
- <option value="2352."> Matériel de bureau</option>
- <option value="2355."> Matériel informatique</option>
- <option value="2356."> Agencements, installations et aménagements divers (biens n'appartenant pas à l'entreprise)</option>
- <option value="2358."> Autres mobilier, matériel de bureau et aménagements divers</option>
- <option value="238."> Autres immobilisations corporelles</option>
- <option value="2380."> Autres immobilisations corporelles</option>
- <option value="239."> Immobilisations corporelles en cours</option>
- <option value="2392."> Immobilisations corporelles en cours des terrains et constructions</option>
- <option value="2393."> Immobilisations corporelles en cours des installations techniques, matériel et outillage</option>
- <option value="2394."> Immobilisations corporelles en cours de matériel de transport</option>
- <option value="2395."> Immobilisations corporelles en cours de mobilier, matériel de bureau et aménagements divers</option>
- <option value="2397."> Avances et acomptes versés sur commandes d'immobilisations corporelles</option>
- <option value="2398."> Autres immobilisations corporelles en cours</option>
- <option value="24/25."> Immobilisations financières</option>
- <option value="241."> Prêts immobilisés</option>
- <option value="2411."> Prêts au personnel</option>
- <option value="2415."> Prêts aux associés</option>
- <option value="2416."> Billets de fonds</option>
- <option value="2418."> Autres prêts</option>
- <option value="248."> Autres créances financières</option>
- <option value="2481."> Titres immobilisés (droits de créance)</option>
- <option value=" 24811."> Obligations</option>
- <option value=" 24813."> Bons d'équipement</option>
- <option value=" 24818."> Bons divers</option>
- <option value="2483."> Créances rattachées à des participations</option>
- <option value="2486."> Dépôts et cautionnements versés</option>
- <option value="24861."> Dépôts</option>
- <option value=" 24864."> Cautionnements</option>
- <option value="2487."> Créances immobilisées</option>
- <option value="2488."> Créances financières diverses</option>
- <option value="251."> Titres de participation</option>
- <option value="2510."> Titres de participation</option>
- <option value="258."> Autres titres immobilisés</option>
- <option value="2581."> Actions</option>
- <option value="2588."> Titres divers</option>
- <option value=" 27."> Ecarts de conversion - actif</option>
- <option value="271."> Diminution des créances immobilisées</option>
- <option value="2710."> Diminution des créances immobilisées</option>
- <option value="272."> Augmentation des dettes de financement</option>
- <option value="2720."> Augmentation des dettes de financement</option>
- <option value="28."> Amortissements des immobilisations</option>
- <option value="281."> Amortissements des non-valeurs</option>
- <option value="2811."> Amortissements des frais préliminaires</option>
- <option value=" 28111."> Amortissements des frais de constitution</option>
- <option value=" 28112."> Amortissements des frais préliminaires au démarrage</option>
- <option value=" 28113."> Amortissements des frais d'augmentation du capital</option>
- <option value=" 28114."> Amortissements des frais sur opérations de fusions, scissions, et transformations</option>
- <option value=" 28116."> Amortissements des frais de prospection</option>
- <option value=" 28117."> Amortissements des frais de publicité</option>
- <option value=" 28118."> Amortissements des autres frais préliminaires</option>
- <option value="2812."> Amortissements des charges à répartir</option>
- <option value=" 28121."> Amortissements des frais d'acquisition des immobilisations</option>
- <option value=" 28125."> Amortissements des frais d'émission des emprunts</option>
- <option value=" 28128."> Amortissements des autres charges à répartir</option>
- <option value="2813."> Amortissements des primes de remboursement des obligations</option>
- <option value="282."> Amortissements des immobilisations incorporelles</option>
- <option value="2821."> Amortissements de l'immobilisation en recherche et développement</option>
- <option value="2822."> Amortissements des brevets, marques, droits et valeurs similaires</option>
- <option value="2823."> Amortissements du fonds commercial</option>
- <option value="2828."> Amortissements des autres immobilisations incorporelles</option>
- <option value="283.">Amortissements des immobilisations corporelles</option>
- <option value="2831."> Amortissements des terrains</option>
- <option value=" 28311."> Amortissements des terrains nus</option>
- <option value=" 28312."> Amortissements des terrains aménagés</option>
- <option value=" 28313."> Amortissements des terrains bâtis</option>
- <option value=" 28314."> Amortissements des terrains de gisement</option>
- <option value=" 28136."> Amortissements des agencements et aménagements de terrains</option>
- <option value=" 28138."> Amortissements des autres terrains</option>
- <option value="2832."> Amortissements des constructions</option>
- <option value="28321."> Amortissements des bâtiments</option>
- <option value=" 28323."> Amortissements des constructions sur terrains d'autrui</option>
- <option value=" 28325."> Amortissements des ouvrages d'infrastructure</option>
- <option value=" 28327."> Amortissements des installations, agencements et aménagements des constructions</option>
- <option value=" 28328."> Amortissements des autres constructions</option>
- <option value="2833."> Amortissements des installations techniques, matériel et outillage</option>
- <option value=" 28331."> Amortissements des installations techniques</option>
- <option value=" 28332."> Amortissements du matériel et outillage</option>
- <option value=" 28333."> Amortissements des emballages récupérables identifiables</option>
- <option value=" 28338."> Amortissements des autres installations techniques, matériel et outillage</option>
- <option value="2834."> Amortissements du matériel de transport</option>
- <option value="2835."> Amortissements du mobilier, matériel de bureau et aménagements divers</option>
- <option value=" 28351."> Amortissements du mobilier de bureau</option>
- <option value=" 28352."> Amortissements du matériel de bureau</option>
- <option value=" 28355."> Amortissements du matériel informatique</option>
- <option value=" 28356."> Amortissements des agencements, installations et aménagements divers</option>
- <option value=" 28358."> Amortissements des autres mobiliers, matériels de bureau et aménagements divers</option>
- <option value="2838."> Amortissements des autres immobilisations corporelles</option>
- <option value="29."> Provisions pour dépréciation des immobilisations</option>
- <option value="292."> Provisions pour dépréciation des immobilisations incorporelles</option>
- <option value="2920."> Provisions pour dépréciation des immobilisations incorporelles</option>
- <option value="293."> Provisions pour dépréciation des immobilisations corporelles</option>
- <option value="2930."> Provisions pour dépréciation des immobilisations corporelles</option>
- <option value="294/295."> Provisions pour dépréciation des immobilisations financières</option>
- <option value="2941."> Provisions pour dépréciation des prêts immobilisés</option>
- <option value="2948."> Provisions pour dépréciation des autres créances financières</option>
- <option value="2951."> Provisions pour dépréciation des titres de participation</option>
- <option value="2958."> Provisions pour dépréciation des autres titres immobilisés</option>
- <option value="31."> Stocks</option>
- <option value="311."> Marchandises</option>
- <option value="3111."> Marchandises (groupe A)</option>
- <option value="3112."> Marchandises (groupe B)</option>
- <option value="3116."> Marchandises en cours de route</option>
- <option value="3118."> Autres marchandises</option>
- <option value="312."> Matières et fournitures consommables</option>
- <option value="3121."> Matières premières</option>
- <option value=" 31211."> Matières premières (groupe A)</option>
- <option value=" 31212."> Matières premières (groupe B)</option>
- <option value="3122."> Matières et fournitures consommables</option>
- <option value=" 31221."> Matières consommables (groupe A)</option>
- <option value=" 31222."> Matières consommables (groupe B)</option>
- <option value=" 31223."> Combustibles</option>
- <option value=" 31224."> Produits d'entretien</option>
- <option value=" 31225."> Fournitures d'atelier et d'usine</option>
- <option value=" 31226."> Fournitures de magasin</option>
- <option value=" 31227."> Fournitures de bureau</option>
- <option value="3123."> Emballages</option>
- <option value=" 31231."> Emballages perdus</option>
- <option value=" 31232."> Emballages récupérables non identifiables</option>
- <option value=" 31233."> Emballages à usage mixte</option>
- <option value="3126."> Matières et fournitures consommables en cours de route</option>
- <option value="3128."> Autres matières et fournitures consommables</option>
- <option value="313."> Produits en cours</option>
- <option value="3131."> Biens en cours</option>
- <option value=" 31311."> Biens produits en cours</option>
- <option value=" 31312."> Biens intermédiaires en cours</option>
- <option value=" 31317."> Biens résiduels en cours</option>
- <option value="3134."> Services en cours</option>
- <option value=" 31341."> Travaux en cours</option>
- <option value=" 31342."> Etudes en cours</option>
- <option value=" 31343."> Prestations en cours</option>
- <option value="3138."> Autres produits en cours</option>
- <option value="314."> Produits intermédiaires et produits résiduels</option>
- <option value="3141."> Produits intermédiaires</option>
- <option value="31411."> Produits intermédiaires (groupe A)</option>
- <option value=" 31412."> Produits intermédiaires (groupe B)</option>
- <option value=" 3145."> Produits résiduels (ou matières de récupération)</option>
- <option value=" 31451."> Déchets</option>
- <option value=" 31452."> Rebuts</option>
- <option value=" 31453."> Matières de récupération</option>
- <option value="3148."> Autres produits intermédiaires et produits résiduels</option>
- <option value="315."> Produits finis</option>
- <option value="3151."> Produits finis (groupe A)</option>
- <option value="3152."> Produits finis (groupe B)</option>
- <option value="3156."> Produits finis en cours de route</option>
- <option value="3158."> Autres produits finis</option>
- <option value="34."> Créances de l'actif circulant</option>
- <option value="341."> Fournisseurs débiteurs, avances et acomptes</option>
- <option value="3411."> Fournisseurs - avances et acomptes versés sur commandes d'exploitation</option>
- <option value="3413."> Fournisseurs - créances pour emballages et matériel à rendre</option>
- <option value="3417."> Rabais, remises et ristournes à obtenir - avoirs non encore reçus</option>
- <option value="3418."> Autres fournisseurs débiteurs</option>
- <option value="342."> Clients et comptes rattachés</option>
- <option value="3421."> Clients</option>
- <option value=" 34211."> Clients - catégorie A</option>
- <option value=" 34212."> Clients - catégorie B</option>
- <option value="3423."> Clients - retenues de garantie</option>
- <option value="3424."> Clients douteux ou litigieux</option>
- <option value="3425."> Clients - effets à recevoir</option>
- <option value="3427."> Clients - factures à établir et créances sur travaux non encore facturés</option>
- <option value=" 34271."> Clients - factures à établir</option>
- <option value=" 34272."> Créances sur travaux non encore facturables</option>
- <option value="3428."> Autres clients et comptes rattachés</option>
- <option value="343."> Personnel - débiteur</option>
- <option value="3431."> Avances et acomptes au personnel</option>
- <option value="3438."> Personnel - autres débiteurs</option>
- <option value="345."> Etat - débiteur</option>
- <option value="3451."> Subventions à recevoir</option>
- <option value=" 34511."> Subventions d'investissement à recevoir</option>
- <option value=" 34512."> Subventions d'exploitation à recevoir</option>
- <option value=" 34513."> Subventions d'équilibre à recevoir</option>
- <option value="3453."> Acomptes sur impôts sur les résultats</option>
- <option value="3455."> Etat - TVA récupérable</option>
- <option value=" 34551."> Etat - TVA récupérable sur immobilisations</option>
- <option value=" 34552."> Etat - TVA récupérable sur charges</option>
- <option value="3456."> Etat - crédit de TVA (suivant déclaration)</option>
- <option value="3458."> Etat - autres comptes débiteurs</option>
- <option value="346."> Comptes d'associés - débiteurs</option>
- <option value="3461."> Associés comptes d'apport en société</option>
- <option value="3462."> Actionnaires - capital souscrit et appelé non versé</option>
- <option value="3463."> Comptes courants des associés débiteurs</option>
- <option value="3464."> Associés - opérations faites en commun</option>
- <option value="3467."> Créances rattachées aux comptes d'associés</option>
- <option value="3468."> Autres comptes d'associés débiteurs</option>
- <option value="348."> Autres débiteurs</option>
- <option value="3481."> Créances sur cessions d'immobilisations</option>
- <option value="3482."> Créances sur cessions d'éléments d'actif circulant</option>
- <option value="3487."> Créances rattachées aux autres débiteurs</option>
- <option value="3488."> Divers débiteurs</option>
- <option value="349."> Comptes de régularisation - actif</option>
- <option value="3491."> Charges constatées d'avance</option>
- <option value="3493."> Intérêts courus et non échus à percevoir</option>
- <option value="3495."> Comptes de répartition périodique des charges</option>
- <option value="3497."> Comptes transitoires ou d'attente – débiteurs</option>
- <option value="35."> Titres et valeurs de placement</option>
- <option value="350."> Titres et valeurs de placement</option>
- <option value="3501."> Actions, partie libérée</option>
- <option value="3502."> Actions, partie non libérée</option>
- <option value="3504."> Obligations</option>
- <option value="3506."> Bons de caisse et bons de trésor</option>
- <option value=" 35061."> Bons de caisse</option>
- <option value=" 35062."> Bons de trésor</option>
- <option value="3508."> Autres titres et valeurs de placement similaires</option>
- <option value="37."> Ecart de conversion - actif (Eléments circulants)</option>
- <option value="370."> Ecart de conversion - Actif (éléments circulants)</option>
- <option value="3701."> Diminution des créances circulantes</option>
- <option value="3702."> Augmentation des dettes circulantes</option>
- <option value="39."> Provisions pour dépréciation des comptes de l'actif circulant</option>
- <option value="391."> Provisions pour dépréciation des stocks</option>
- <option value="3911."> Provisions pour dépréciation des marchandises</option>
- <option value="3912."> Provisions pour dépréciation des matières et fournitures</option>
- <option value="3913."> Provisions pour dépréciation des produits en cours</option>
- <option value="3914."> Provisions pour dépréciation des produits intermédiaires</option>
- <option value="3915."> Provisions pour dépréciation des produits finis</option>
- <option value=" 394."> Provisions pour dépréciation des créances de l'actif circulant</option>
- <option value="3941."> Provisions pour dépréciation - fournisseurs débiteurs, avances et acomptes</option>
- <option value="3942."> Provisions pour dépréciation des clients et comptes rattachés</option>
- <option value="3943."> Provisions pour dépréciation du personnel - débiteur</option>
- <option value="3946."> Provisions pour dépréciation des comptes d'associés débiteurs</option>
- <option value="3948."> Provisions pour dépréciation des autres débiteurs</option>
- <option value=" 395."> Provisions pour dépréciation des titres et valeurs de placement</option>
- <option value="3950."> Provisions pour dépréciation des titres et valeurs de placement</option>
- <option value="44."> Dettes du passif circulant</option>
- <option value="441."> Fournisseurs et comptes rattachés</option>
- <option value="4411."> Fournisseurs</option>
- <option value=" 44111."> Fournisseurs - catégorie A</option>
- <option value=" 44112."> Fournisseurs - catégorie B</option>
- <option value="4413."> Fournisseurs - retenues de garantie</option>
- <option value="4415."> Fournisseurs - effets à payer</option>
- <option value="4417."> Fournisseurs - factures non parvenues</option>
- <option value="4418."> Autres fournisseurs et comptes rattachés</option>
- <option value="442."> Clients créditeurs, avances et acomptes</option>
- <option value="4421."> Clients - avances et acomptes reçus sur commandes en cours</option>
- <option value="4425."> Clients - dettes pour emballages et matériel consignés</option>
- <option value="4427."> Rabais, remises et ristournes à accorder - avoirs à établir</option>
- <option value="4428."> Autres clients créditeurs</option>
- <option value="443."> Personnel - créditeur</option>
- <option value="4432."> Rémunérations dues au personnel</option>
- <option value="4433."> Dépôts du personnel créditeurs</option>
- <option value="4434."> Oppositions sur salaires</option>
- <option value="4437."> Charges du personnel à payer</option>
- <option value="4438."> Personnel - autres créditeurs</option>
- <option value="444."> Organismes sociaux</option>
- <option value="4441."> Caisse Nationale de la Sécurité Sociale</option>
- <option value="4443."> Caisses de retraite</option>
- <option value="4445."> Mutuelles</option>
- <option value="4447."> Charges sociales à payer</option>
- <option value="4448."> Autres organismes sociaux</option>
- <option value="445."> Etat - créditeur</option>
- <option value="4452."> Etat Impôts, taxes et assimilés</option>
- <option value=" 44521."> Etat, taxe urbaine et taxe d'édilité</option>
- <option value=" 44522."> Etat, patente</option>
- <option value=" 44525."> Etat, IGR</option>
- <option value="4453."> Etat, impôts sur les résultats</option>
- <option value="4455."> Etat, TVA facturée</option>
- <option value="4456."> Etat, TVA due (suivant déclarations)</option>
- <option value="4457."> Etat, impôts et taxes à payer</option>
- <option value="4458."> Etat - autres comptes créditeurs</option>
- <option value="446."> Comptes d'associés - créditeurs</option>
- <option value="4461."> Associés - capital à rembourser</option>
- <option value="4462."> Associés - versements reçus sur augmentation de capital</option>
- <option value="4463."> Comptes courants des associés créditeurs</option>
- <option value="4464."> Associés - opérations faites en commun</option>
- <option value="4465."> Associés - dividendes à payer</option>
- <option value="4468."> Autres comptes d'associés - créditeurs</option>
- <option value="448."> Autres créanciers</option>
- <option value="4481."> Dettes sur acquisitions d'immobilisations</option>
- <option value="4483."> Dettes sur acquisitions de titres et valeurs de placement</option>
- <option value=" 4484."> Obligations échues à rembourser</option>
- <option value="4485."> Obligations, coupons à payer</option>
- <option value="4487."> Dettes rattachées aux autres créanciers</option>
- <option value="4488."> Divers créanciers</option>
- <option value="449."> Comptes de régularisation - passif</option>
- <option value="4491."> Produits constatés d'avance</option>
- <option value="4493."> Intérêts courus et non échus à payer</option>
- <option value="4495."> Comptes de répartition périodique des produits</option>
- <option value="4497."> Comptes transitoires ou d'attente – créditeurs</option>
- <option value=" 45."> Autres provisions pour risques et charges</option>
- <option value="450."> Autres provisions pour risques et charges</option>
- <option value="4501."> Provisions pour litiges</option>
- <option value="4502."> Provisions pour garanties données aux clients</option>
- <option value="4505."> Provisions pour amendes, doubles droits et pénalités</option>
- <option value="4506."> Provisions pour pertes de change</option>
- <option value="4507."> Provisions pour impôts</option>
- <option value="4508."> Autres provisions pour risques et charges</option>
- <option value=" 47."> ECARTS DE CONVERSION - PASSIF (Eléments circulants)</option>
- <option value="470."> Ecarts de conversion - passif (Eléments circulants)</option>
- <option value="4701."> Augmentation des créances circulantes</option>
- <option value="4702."> Diminution des dettes circulantes</option>
- <option value="51."> Trésorerie - actif</option>
- <option value="511."> Chèques et valeurs à encaisser</option>
- <option value="5111."> Chèques à encaisser ou à l'encaissement</option>
- <option value=" 51111."> Chèques en portefeuille</option>
- <option value=" 51112."> Chèques à l'encaissement</option>
- <option value="5113."> Effets à encaisser ou à l'encaissement</option>
- <option value=" 51131."> Effets échus à encaisser</option>
- <option value=" 51132."> Effets à l'encaissement</option>
- <option value="5115."> Virement de fonds</option>
- <option value="5118."> Autres valeurs à encaisser</option>
- <option value="514."> Banques, Trésorerie Générale et chèques postaux débiteurs</option>
- <option value="5141."> Banques (solde débiteur)</option>
- <option value="5143."> Trésorerie Générale</option>
- <option value="5146."> Chèques postaux</option>
- <option value="5148."> Autres établissements financiers et assimilés (soldes débiteurs)</option>
- <option value="516."> Caisses, régies d'avances et accréditifs</option>
- <option value="5161."> Caisses</option>
- <option value=" 51611."> Caisse Centrale</option>
- <option value=" 51613."> Caisse (succursale ou agence A)</option>
- <option value=" 51614."> Caisse (succursale ou agence B)</option>
- <option value="5165."> Régies d'avances et accréditifs</option>
- <option value=" 55."> Trésorerie - passif</option>
- <option value="552."> Crédits d'escompte</option>
- <option value="5520."> Crédits d'escompte</option>
- <option value="553."> Crédits de trésorerie</option>
- <option value="5530."> Crédits de trésorerie</option>
- <option value="554."> Banques (solde créditeur)</option>
- <option value="5541."> Banques (solde créditeur)</option>
- <option value="5548."> Autres établissements financiers et assimilés (soldes créditeurs)</option>
- <option value="59."> Provisions pour dépréciation des comptes de trésorerie</option>
- <option value="590."> Provisions pour dépréciation des comptes de trésorerie</option>
- <option value="5900."> Provisions pour dépréciation des comptes de trésorerie</option>
- <option value="61."> Charges d'exploitation</option>
- <option value="611."> Achats revendus de marchandises</option>
- <option value="6111."> Achats de marchandises "groupe A"</option>
- <option value="6112."> Achats de marchandises "groupe B"</option>
- <option value="6114."> Variation de stocks de marchandises</option>
- <option value="6118."> Achats revendus de marchandises des exercices antérieurs</option>
- <option value="6119."> Rabais, remises et ristournes obtenus sur achats de marchandises</option>
- <option value="612."> Achats consommés de matières et fournitures</option>
- <option value="6121."> Achats de matières premières</option>
- <option value=" 61211."> Achats de matières premières A</option>
- <option value=" 61212."> Achats de matières premières B</option>
- <option value="6122."> Achats de matières et fournitures consommables</option>
- <option value="61221."> Achats de matières et fournitures A</option>
- <option value=" 61222."> Achats de matières et fournitures B</option>
- <option value=" 61223."> Achats de combustibles</option>
- <option value=" 61224."> Achats de produits d'entretien</option>
- <option value=" 61225."> Achats de fournitures d'atelier et d'usine</option>
- <option value=" 61226."> Achats de fournitures de magasin</option>
- <option value=" 61227."> Achats de fournitures de bureau</option>
- <option value="6123."> Achats d'emballages</option>
- <option value="61231."> Achats d'emballages perdus</option>
- <option value=" 61232."> Achats d'emballages récupérables non identifiables</option>
- <option value=" 61233."> Achats d'emballages à usage mixte</option>
- <option value="6124."> Variation des stocks de matières et fournitures</option>
- <option value="61241."> Variation des stocks de matières premières</option>
- <option value=" 61242."> Variation des stocks de matières et fournitures consommables</option>
- <option value=" 61243."> Variation des stocks des emballages</option>
- <option value="6125."> Achats non stockés de matières et fournitures</option>
- <option value=" 61251."> Achats de fournitures non stockables (eau, électricité,)</option>
- <option value=" 61252."> Achats de fournitures d'entretien</option>
- <option value=" 61253."> Achats de petit outillage et petit équipement</option>
- <option value=" 61254."> Achats de fournitures de bureau</option>
- <option value="6126."> Achats de travaux, études et prestations de service</option>
- <option value="61261."> Achats des travaux</option>
- <option value=" 61262."> Achats des études</option>
- <option value=" 61263."> Achats des prestations de service</option>
- <option value="6128."> Achats de matières et de fournitures des exercices antérieurs</option>
- <option value="6129."> Rabais, remises et ristournes obtenus sur achats consommés de matières et fournitures</option>
- <option value=" 61291."> Rabais, remises et ristournes obtenus sur achats de matières premières</option>
- <option value=" 61292."> Rabais, remises et ristournes obtenus sur achats de matières et fournitures consommables</option>
- <option value=" 61293."> Rabais, remises et ristournes obtenus sur achats des emballages</option>
- <option value=" 61295."> Rabais, remises et ristournes obtenus sur achats non stockés</option>
- <option value=" 61296."> Rabais, remises et ristournes obtenus sur achats de travaux, études et prestations de service</option>
- <option value=" 61298."> Rabais, remises et ristournes obtenus sur achats de matières et fournitures des exercices antérieurs</option>
- <option value="613/614."> Autres charges externes</option>
- <option value="6131."> Locations et charges locatives</option>
- <option value="61311."> Locations de terrains</option>
- <option value=" 61312."> Locations de constructions</option>
- <option value=" 61313."> Locations de matériel et d'outillage</option>
- <option value=" 61314."> Locations de mobilier et de matériel de bureau</option>
- <option value=" 61315."> Locations de matériel informatique</option>
- <option value=" 61316."> Locations de matériel de transport</option>
- <option value=" 61317."> Malis sur emballages rendus</option>
- <option value=" 61318."> Locations et charges locatives diverses</option>
- <option value="6132."> Redevances de crédit-bail</option>
- <option value="61321."> Redevances de crédit-bail - mobilier et matériel</option>
- <option value="6133."> Entretien et réparations</option>
- <option value=" 61331."> Entretien et réparations des biens immobiliers</option>
- <option value=" 61332."> Entretien et réparations des biens mobiliers</option>
- <option value=" 61335."> Maintenance</option>
- <option value="6134."> Primes d'assurances</option>
- <option value="61341."> Assurances multirisque (vol, incendie, R.C,)</option>
- <option value=" 61343."> Assurances - risques d'exploitation</option>
- <option value=" 61345."> Assurances - Matériel de transport</option>
- <option value=" 61348."> Autres assurances</option>
- <option value="6135."> Rémunérations du personnel extérieur à l'entreprise</option>
- <option value="61351."> Rémunérations du personnel occasionnel</option>
- <option value=" 61352."> Rémunérations du personnel intérimaire</option>
- <option value=" 61353."> Rémunérations du personnel détaché ou prêté à l'entreprise</option>
- <option value="6136."> Rémunérations d'intermédiaires et honoraires</option>
- <option value=" 61361."> Commissions et courtages</option>
- <option value=" 61365."> Honoraires</option>
- <option value=" 61367."> Frais d'actes et de contentieux</option>
- <option value="6137."> Redevances pour brevets, marques, droits et valeurs similaires</option>
- <option value="61371."> Redevances pour brevets</option>
- <option value=" 61378."> Autres redevances</option>
- <option value="6141."> Etudes, recherches et documentation</option>
- <option value="61411."> Etudes générales</option>
- <option value=" 61413."> Recherches</option>
- <option value=" 61415."> Documentation générale</option>
- <option value=" 61416."> Documentation technique</option>
- <option value="6142."> Transports</option>
- <option value="61421."> Transports du personnel</option>
- <option value=" 61425."> Transports sur achats</option>
- <option value=" 61426."> Transports sur ventes</option>
- <option value=" 61428."> Autres transports</option>
- <option value="6143."> Déplacements, missions et réceptions</option>
- <option value="61431."> Voyages et déplacements</option>
- <option value=" 61433."> Frais de déménagement</option>
- <option value=" 61435."> Missions</option>
- <option value=" 61436."> Réceptions</option>
- <option value="6144."> Publicité, publications et relations publiques</option>
- <option value="61441."> Annonces et insertions</option>
- <option value=" 61442."> Echantillons, catalogues et imprimés publicitaires</option>
- <option value=" 61443."> Foires et expositions</option>
- <option value=" 61444."> Primes de publicité</option>
- <option value=" 61446."> Publications</option>
- <option value=" 61447."> Cadeaux à la clientèle</option>
- <option value=" 61448."> Autres charges de publicité et relations publiques</option>
- <option value="6145."> Frais postaux et frais de télécommunications</option>
- <option value=" 61451."> Frais postaux</option>
- <option value=" 61455."> Frais de téléphone</option>
- <option value=" 61456."> Frais de télex et de télégrammes</option>
- <option value="6146."> Cotisations et dons</option>
- <option value=" 61461."> Cotisations</option>
- <option value=" 61462."> Dons</option>
- <option value="6147."> Services bancaires</option>
- <option value="61471."> Frais d'achat et de vente des titres</option>
- <option value=" 61472."> Frais sur effets de commerce</option>
- <option value=" 61473."> Frais et commissions sur services bancaires</option>
- <option value="6148."> Autres charges externes des exercices antérieurs</option>
- <option value="6149."> Rabais, remises et ristournes obtenus sur autres charges externes</option>
- <option value="616."> Impôts et taxes</option>
- <option value="6161."> Impôts et taxes directs</option>
- <option value=" 61611."> Taxe urbaine et taxe d'édilité</option>
- <option value=" 61612."> Patente</option>
- <option value=" 61615."> Taxes locales</option>
- <option value="6165."> Impôts et taxes directs</option>
- <option value="6167."> Impôts, taxes et droits assimilés</option>
- <option value=" 61671."> Droits d’enregistrement et de timbre</option>
- <option value=" 61673."> Taxes sur les véhicules</option>
- <option value=" 61678."> Autres impôts, taxes et droits assimilés</option>
- <option value="6168."> Impôts et taxes des exercices antérieurs</option>
- <option value="617."> Charges de personnel</option>
- <option value="6171."> Rémunérations du personnel</option>
- <option value="61711."> Appointements et salaires</option>
- <option value=" 61712."> Primes et gratifications</option>
- <option value=" 61713."> Indemnités et avantages divers</option>
- <option value=" 61714."> Commissions au personnel</option>
- <option value=" 61715."> Rémunérations des administrateurs, gérants et associés</option>
- <option value="6174."> Charges sociales</option>
- <option value=" 61741."> Cotisations de sécurité sociale</option>
- <option value=" 61742."> Cotisations aux caisses de retraite</option>
- <option value=" 61743."> Cotisations aux mutuelles</option>
- <option value=" 61744."> Prestations familiales</option>
- <option value=" 61745."> Assurances accidents de travail</option>
- <option value="6176."> Charges sociales diverses</option>
- <option value=" 61761."> Assurances groupe</option>
- <option value=" 61762."> Prestations de retraites</option>
- <option value=" 61763."> Allocations aux œuvres sociales</option>
- <option value=" 61764."> Habillement et vêtements de travail</option>
- <option value=" 61765."> Indemnités de préavis et de licenciement</option>
- <option value=" 61766."> Médecine de travail, pharmacie</option>
- <option value=" 61768."> Autres charges sociales diverses</option>
- <option value="6177."> Rémunération de l'exploitant</option>
- <option value="61771."> Appointements et salaires</option>
- <option value=" 61774."> Charges sociales sur appointements et salaires de l’exploitant</option>
- <option value="6178."> Charges du personnel des exercices antérieurs</option>
- <option value="618."> Autres charges d'exploitation</option>
- <option value="6181."> Jetons de présence</option>
- <option value="6182."> Pertes sur créances irrécouvrables</option>
- <option value="6185."> Pertes sur opérations faites en commun</option>
- <option value="6186."> Transfert de profits sur opérations faites en commun</option>
- <option value="6188."> Autres charges d’exploitation des exercices antérieurs</option>
- <option value="619."> Dotations d’exploitation</option>
- <option value="6191."> Dotations d’exploitation aux amortissements de l’immobilisation en non valeur</option>
- <option value="61911."> D.E.A. des frais préliminaires</option>
- <option value=" 61912."> D.E.A. des charges à répartir</option>
- <option value="6192."> Dotations d’exploitation aux amortissements des immobilisations incorporelles</option>
- <option value=" 61921."> D.E.A. de l’immobilisation en recherche et développement</option>
- <option value=" 61922."> D.E.A. des brevets, marques, droits et valeurs similaires</option>
- <option value=" 61923."> D.E.A. du fonds commercial</option>
- <option value=" 61928."> D.E.A. des autres immobilisations incorporelles</option>
- <option value="6193."> Dotations d’exploitation aux amortissements des immobilisations corporelles</option>
- <option value="61931."> D.E.A. des terrains</option>
- <option value=" 61932."> D.E.A. des constructions</option>
- <option value=" 61933."> D.E.A. des installations techniques, matériel et outillage</option>
- <option value=" 61934."> D.E.A. du matériel de transport</option>
- <option value=" 61935."> D.E.A. des mobiliers, matériels de bureau et aménagements divers</option>
- <option value=" 61938."> D.E.A. des autres immobilisations corporelles</option>
- <option value="6194."> Dotations d’exploitation aux provisions pour dépréciation des immobilisations</option>
- <option value=" 61942."> D.E.P. pour dépréciation des immobilisations incorporelles</option>
- <option value=" 61943."> D.E.P. pour dépréciation des immobilisations corporelles</option>
- <option value="6195."> Dotations d’exploitation aux provisions pour risques et charges</option>
- <option value=" 61955."> D.E.P. pour risques et charges durables</option>
- <option value=" 91957."> D.E.P. pour risques et charges momentanés</option>
- <option value="6196."> Dotations d’exploitation aux provisions pour dépréciations de l’actif circulant</option>
- <option value=" 61961."> D.E.P. pour dépréciation des stocks</option>
- <option value=" 61964."> D.E.P. pour dépréciation des créances de l’actif circulant</option>
- <option value="6198."> Dotations d’exploitation des exercices antérieurs</option>
- <option value=" 61981."> D.E. aux amortissements des exercices antérieurs</option>
- <option value=" 61984."> D.E. aux provisions des exercices antérieurs</option>
- <option value="63."> Charges financières</option>
- <option value="631."> Charges d’intérêts</option>
- <option value="6311."> Intérêts des emprunts et dettes</option>
- <option value=" 63111."> Intérêts des emprunts</option>
- <option value=" 63113."> Intérêts des dettes rattachées à des participations</option>
- <option value=" 63114."> Intérêts des comptes courants et dépôts créditeurs</option>
- <option value=" 63115."> Intérêts bancaires et sur opérations de financement</option>
- <option value=" 63118."> Autres intérêts des emprunts et dettes</option>
- <option value="6318."> Charges d’intérêts des exercices antérieurs</option>
- <option value="633."> Pertes de change</option>
- <option value="6331."> Pertes de change propres à l’exercice</option>
- <option value="6338."> Pertes de change des exercices antérieurs</option>
- <option value="638."> Autres charges financières</option>
- <option value="6382."> Pertes sur créances liées à des participations</option>
- <option value="6385."> Charges nettes sur cession de titres et valeurs de placement</option>
- <option value="6386."> Escomptes accordés</option>
- <option value="6388."> Autres charges financières des exercices antérieurs</option>
- <option value="639."> Dotations financières</option>
- <option value="6391."> Dotations aux amortissements des primes de remboursement des obligations</option>
- <option value="6392."> Dotations aux provisions pour dépréciations des immobilisations financières</option>
- <option value="6393."> Dotations aux provisions pour risques et charges financières</option>
- <option value="6394."> Dotation aux provisions pour dépréciation des titres et valeurs de placement</option>
- <option value="6396."> Dotations aux provisions pour dépréciation des comptes de trésorerie</option>
- <option value="6398."> Dotations financières des exercices antérieurs</option>
- <option value="65."> Charges non courantes</option>
- <option value="651."> Valeurs nettes d’amortissements des immobilisations cédées (V.N.A)</option>
- <option value="6512."> VNA des immobilisations incorporelles cédées</option>
- <option value="6513."> VNA des immobilisations corporelles cédées</option>
- <option value="6514."> VNA provisions des immobilisations financières cédées (droits de propriété)</option>
- <option value="6518."> VNA des immobilisations cédées des exercices antérieurs</option>
- <option value="656."> Subventions accordées</option>
- <option value="6561."> Subventions accordées de l’exercice</option>
- <option value="6568."> Subventions accordées des exercices antérieurs</option>
- <option value="658."> Autres charges non courantes</option>
- <option value="6581."> Pénalités sur marchés et dédits</option>
- <option value=" 65811."> Pénalités sur marchés</option>
- <option value="65812."> Dédits</option>
- <option value="6582."> Rappels d’impôts (autres qu’impôts sur les résultats)</option>
- <option value="6583."> Pénalités et amendes fiscales ou pénales</option>
- <option value="65831."> Pénalités et amendes fiscales</option>
- <option value=" 65833."> Pénalités et amendes pénales</option>
- <option value="6585."> Créances devenues irrécouvrables</option>
- <option value="6586."> Dons, libéralités et lots</option>
- <option value="65861."> Dons</option>
- <option value=" 65862."> Libéralités</option>
- <option value=" 65863."> Lots</option>
- <option value="6588."> Autres charges non courantes des exercices antérieurs</option>
- <option value="659."> Dotations non courantes</option>
- <option value="6591."> Dotations aux amortissements exceptionnels des immobilisations</option>
- <option value="65911."> D.A.E. de l’immobilisation en non-valeurs</option>
- <option value=" 65912."> D.A.E. des immobilisations incorporelles</option>
- <option value=" 65913."> D.A.E. des immobilisations corporelles</option>
- <option value="6594."> Dotations non courantes aux provisions réglementées</option>
- <option value="65941."> D.N.C. pour amortissements dérogatoires</option>
- <option value=" 65942."> D.N.C. pour plus-values en instance d'imposition</option>
- <option value=" 65944."> D.N.C. pour investissements</option>
- <option value=" 65945."> D.N.C. pour reconstitution de gisements</option>
- <option value=" 65946."> D.N.C. pour acquisition et construction de logements</option>
- <option value="6595."> Dotations non courantes aux provisions pour risques et charges</option>
- <option value="65955."> D.N.C. aux provisions pour risques et charges durables</option>
- <option value=" 65957."> D.N.C. aux provisions pour risques et charges momentanés</option>
- <option value="6596."> Dotations non courantes aux provisions pour dépréciation</option>
- <option value=" 65962."> D.N.C. aux provisions pour dépréciation de l’actif immobilisé</option>
- <option value=" 65963."> D.N.C. aux provisions pour dépréciation de l’actif circulant</option>
- <option value="6598."> Dotations non courantes des exercices antérieurs</option>
- <option value="67."> Impôts sur les résultats</option>
- <option value="670."> Impôts sur les résultats</option>
- <option value="6701."> Impôts sur les bénéfices</option>
- <option value="6705."> Imposition minimale annuelle des sociétés</option>
- <option value="6708."> Rappels et dégrèvements d’impôts sur les résultats</option>
- <option value="71."> Produits d’exploitation</option>
- <option value="711."> Ventes de marchandises</option>
- <option value="7111."> Ventes de marchandises au Maroc</option>
- <option value="7113."> Ventes de marchandises à l’étranger</option>
- <option value="7118."> Ventes de marchandises des exercices antérieurs</option>
- <option value="7119."> Rabais, remises et ristournes accordés par l’entreprise</option>
- <option value="712."> Ventes de biens et services produits</option>
- <option value="7121."> Ventes de biens produits au Maroc</option>
- <option value=" 71211."> Ventes de produits finis</option>
- <option value=" 71212."> Ventes de produits intermédiaires</option>
- <option value=" 71217."> Ventes de produits résiduels</option>
- <option value="7122."> Ventes de biens produits à l’étranger</option>
- <option value="71221."> Ventes de produits finis</option>
- <option value=" 71222."> Ventes de produits intermédiaires</option>
- <option value="7124."> Ventes de services produits au Maroc</option>
- <option value=" 71241."> Travaux</option>
- <option value=" 71242."> Etudes</option>
- <option value=" 71243."> Prestations de services</option>
- <option value="7125."> Ventes de services produits à l'étranger</option>
- <option value=" 71251."> Travaux</option>
- <option value=" 71252."> Etudes</option>
- <option value=" 71253."> Prestations de services</option>
- <option value="7126."> Redevances pour brevets, marques, droits et valeurs similaires</option>
- <option value="7127."> Ventes de produits accessoires</option>
- <option value="71271."> Locations divers reçues</option>
- <option value=" 71272."> Commissions et courtages reçus</option>
- <option value=" 71273."> Produits de services exploités dans l'intérêt du personnel</option>
- <option value=" 71275."> Bonis sur reprises d'emballages consignés</option>
- <option value=" 71276."> Ports et frais accessoires facturés</option>
- <option value=" 71278."> Autres ventes et produits accessoires</option>
- <option value="7128."> Ventes de biens et services produits des exercices antérieurs</option>
- <option value="7129."> Rabais, remises et ristournes accordés par l’entreprise</option>
- <option value="71291."> R.R.R accordées sur ventes au Maroc des biens produits</option>
- <option value=" 71292."> R.R.R accordées sur ventes à l'étranger des biens produits</option>
- <option value=" 71294."> R.R.R accordées sur ventes au Maroc des services produits</option>
- <option value=" 71295."> R.R.R accordées sur ventes à l'étranger des services produits</option>
- <option value=" 71298."> Rabais, remises et ristournes accordés sur ventes de biens et services produits des exercices antérieurs</option>
- <option value="713."> Variation des stocks de produits</option>
- <option value="7131."> Variation des stocks de produits en cours</option>
- <option value=" 71311."> Variation des stocks de biens produits en cours</option>
- <option value=" 71312."> Variation des stocks de produits intermédiaires en cours</option>
- <option value=" 71317."> Variation des stocks de produits résiduels en cours</option>
- <option value="7132."> Variation des stocks de biens produits</option>
- <option value=" 71321."> Variation des stocks de produits finis</option>
- <option value=" 71322."> Variation des stocks de produits intermédiaires</option>
- <option value=" 71327."> Variation des stocks de produits résiduels</option>
- <option value="7134."> Variation des stocks de services en cours</option>
- <option value="71341."> Variation des stocks de travaux en cours</option>
- <option value=" 71342."> Variation des stocks d'études en cours</option>
- <option value=" 71343."> Variation des stocks de prestations en cours</option>
- <option value="714."> Immobilisations produites par l’entreprise pour elle même</option>
- <option value="7141."> Immobilisation en non valeurs produite</option>
- <option value="7142."> Immobilisations incorporelles produites</option>
- <option value="7143."> Immobilisations corporelles produites</option>
- <option value="7148."> Immobilisations produites des exercices antérieurs</option>
- <option value="716."> Subventions d’exploitation</option>
- <option value="7161."> Subventions d’exploitations reçues de l’exercice</option>
- <option value="7168."> Subventions d’exploitation reçues des exercices antérieurs</option>
- <option value="718."> Autres produits d’exploitation</option>
- <option value="7181."> Jetons de présence reçus</option>
- <option value="7182."> Revenus des immeubles non affectés à l’exploitation</option>
- <option value="7185."> Profits sur opérations faites en commun</option>
- <option value="7186."> Transfert de pertes sur opérations faites en commun</option>
- <option value="7188."> Autres produits d’exploitation des exercices antérieurs</option>
- <option value="719."> Reprise d’exploitation, transferts de charges</option>
- <option value="7191."> Reprises sur amortissements de l’immobilisation en non valeurs</option>
- <option value="7192."> Reprises sur amortissements des immobilisations incorporelles</option>
- <option value="7193."> Reprises sur amortissements des immobilisations corporelles</option>
- <option value="7194."> Reprises sur provisions pour dépréciation des immobilisations</option>
- <option value="7195."> Reprises sur provisions pour risques et charges</option>
- <option value="7196."> Reprises sur provisions pour dépréciation de l’actif circulant</option>
- <option value="7197."> Transferts des charges d’exploitation</option>
- <option value="71971."> T.C.E - Achats de marchandises</option>
- <option value=" 71972."> T.C.E - Achats consommés de matières et fournitures</option>
- <option value=" 71973."> T.C.E - Autres charges externes</option>
- <option value=" 71975."> T.C.E - Impôts et taxes</option>
- <option value=" 71976."> T.C.E - Charges de personnel</option>
- <option value=" 71978."> T.C.E - Autres charges d'exploitation</option>
- <option value="7198."> Reprises sur amortissements et provisions des exercices antérieurs</option>
- <option value="71981."> Reprises sur amortissements des exercices antérieurs</option>
- <option value=" 71984."> Reprises sur provisions des exercices antérieurs</option>
- <option value="73."> Produits financiers</option>
- <option value="732."> Produits des titres de participation et des autres titres immobilisés</option>
- <option value="7321."> Revenus des titres de participation</option>
- <option value="7325."> Revenus des titres immobilisés</option>
- <option value="7328."> Produits des titres de participation et des autres titres immobilisés des exercices antérieurs</option>
- <option value="733."> Gains de change</option>
- <option value="7331."> Gains de change propres à l’exercice</option>
- <option value="7338."> Gains de change des exercices antérieurs</option>
- <option value="738."> Intérêts et autres produits financiers</option>
- <option value="7381."> Intérêts et produits assimilés</option>
- <option value="73811."> Intérêts des prêts</option>
- <option value=" 73813."> Revenus des autres créances financières</option>
- <option value="7383."> Revenus des créances rattachées à des participations</option>
- <option value="7384."> Revenus des titres et valeurs de placement</option>
- <option value="7385."> Produits nets sur cessions de titres et valeurs de placement</option>
- <option value="7386."> Escomptes obtenus</option>
- <option value="7388."> Intérêts et autres produits financiers des exercices antérieurs</option>
- <option value="739."> Reprises financières, transferts de charges</option>
- <option value="7391."> Reprises sur amortissements des primes de remboursement des obligations</option>
- <option value="7392."> Reprises sur provisions pour dépréciation des immobilisations financières</option>
- <option value="7393."> Reprises sur provisions pour risques et charges financières</option>
- <option value="7394."> Reprise sur provisions pour dépréciation des titres et valeurs de placement</option>
- <option value="7396."> Reprises sur provisions pour dépréciation des comptes de trésorerie</option>
- <option value="7397."> Transfert de charges financières</option>
- <option value=" 73971."> Transfert - Charges d'intérêts</option>
- <option value=" 73973."> Transfert - Pertes de change</option>
- <option value=" 73978."> Transfert - Autres charges financières</option>
- <option value="7398."> Reprises sur dotations financières des exercices antérieurs</option>
- <option value="75."> Produits non courants</option>
- <option value="751."> Produits des cessions d’immobilisations</option>
- <option value="7512."> Produits des cessions des immobilisations incorporelles</option>
- <option value="7513."> Produits des cessions des immobilisations corporelles</option>
- <option value="7514."> Produits des cessions des immobilisations financières (droits de propriété)</option>
- <option value="7518."> Produits des cessions des immobilisations des exercices antérieurs</option>
- <option value="756."> Subventions d’équilibre</option>
- <option value="7561."> Subventions d’équilibre reçues de l’exercice</option>
- <option value="7568."> Subventions d’équilibre reçues des exercices antérieurs</option>
- <option value="757."> Reprise sur subventions d’investissements</option>
- <option value="7577."> Reprises sur subventions d’investissement de l’exercice</option>
- <option value="7578."> Reprises sur subventions d’investissement des exercices antérieurs</option>
- <option value="758."> Autres produits non courants</option>
- <option value="7581."> Pénalités et dédits reçus</option>
- <option value=" 75811."> Pénalités reçues sur marchés</option>
- <option value=" 75812."> Dédits reçus</option>
- <option value="7582."> Dégrèvement d’impôts (autres qu’impôts sur les résultats)</option>
- <option value="7585."> Rentrées sur créances soldées</option>
- <option value="7586."> Dons, libéralités et lots reçus</option>
- <option value="75861."> Dons</option>
- <option value=" 75862."> Libéralités</option>
- <option value=" 75863."> Lots</option>
- <option value="7588."> Autres produits non courants des exercices antérieurs</option>
- <option value="759."> Reprises non courantes, transferts de charges</option>
- <option value="7591."> Reprises non courantes sur amortissements exceptionnels des immobilisations</option>
- <option value="75911."> R.A.E de l'immobilisation en non valeurs</option>
- <option value=" 75912."> R.A.E des immobilisations incorporelles</option>
- <option value=" 75913."> R.A.E des immobilisations corporelles</option>
- <option value="7594."> Reprises non courantes sur provisions réglementées</option>
- <option value=" 75941."> Reprises sur amortissements dérogatoires</option>
- <option value=" 75942."> Reprises sur plus-values en instance d'imposition</option>
- <option value=" 75944."> Reprises sur provisions pour investissements</option>
- <option value=" 75945."> Reprises sur provisions pour reconstitution de gisements</option>
- <option value=" 75946."> Reprises sur provisions pour acquisition et construction de logements</option>
- <option value="7595."> Reprises non courantes sur provisions pour risques et charges</option>
- <option value="75955."> Reprises sur provisions pour risques et charges durables</option>
- <option value=" 75957."> Reprises sur provisions pour risques et charges momentanés</option>
- <option value="7596."> Reprises non courantes sur provisions pour dépréciation</option>
- <option value=" 75962."> R.N.C sur provisions pour dépréciation de l'actif immobilisé</option>
- <option value=" 75963."> R.N.C sur provisions pour dépréciation de l'actif circulant</option>
- <option value="7597."> Transferts de charges non courantes</option>
- <option value="7598."> Reprises non courantes des exercices antérieurs</option>
+                 <option value="1111."> Capital social</option>
+                 <option value="1112."> Fonds de dotation</option>
+                 <option value="1117."> Capital personnel</option>
 
-            </datalist>
-            <label>Numéro de facture :</label><input type="text" id="numero-facture">
+</datalist>
+            <label>Numéro de facture :</label><input type="text" id="num-facture" placeholder="Numéro de facture">
             <label>Montant HT :</label><input type="number" id="ht-achat">
             <label>TVA :</label>
             <select id="tva-achat">
                 <option value="">-- Choisir --</option>
                 <option value="10">10%</option>
-<option value="20">15%</option>
-<option value="20">18%</option>
                 <option value="20">20%</option>
             </select>`;
     } else {
         html += `
             <label>Compte Comptable :</label><input list="plan-comptable" id="compte-comptable">
-            <datalist id="plan-comptable">
+ <datalist id="plan-comptable"> 
                  <option value="111."> Capital social ou personnel</option>
- <option value="1111."> Capital social</option>
- <option value="1112."> Fonds de dotation</option>
- <option value="1117."> Capital personnel</option>
- <option value=" 11171."> Capital individuel</option>
- <option value=" 11175."> Compte de l'exploitant</option>
- <option value="1119."> Actionnaires, capital souscrit-non appelé</option>
- <option value="112."> Primes d'émission, de fusion et d'apport</option>
- <option value="1121."> Primes d'émission</option>
- <option value="1122."> Primes de fusion</option>
- <option value="1123."> Primes d'apport</option>
- <option value="113."> Ecarts de réévaluation</option>
- <option value="1130."> Ecarts de réévaluation</option>
- <option value="114."> Réserve légale</option>
- <option value="1140."> Réserve légale</option>
- <option value="115."> Autres réserves</option>
- <option value="1151."> Réserves statutaires ou contractuelles</option>
- <option value="1152."> Réserves facultatives</option>
- <option value="1155."> Réserves réglementées</option>
- <option value="116."> Report à nouveau</option>
- <option value="1161."> Report à nouveau (solde créditeur)</option>
- <option value="1169."> Report à nouveau (solde débiteur)</option>
- <option value="118."> Résultats nets en instance d'affectation</option>
- <option value="1181."> Résultats nets en instance d'affectation (solde créditeur)</option>
- <option value="1189."> Résultats nets en instance d'affectation (solde débiteur)</option>
- <option value="119."> Résultat net de l'exercice</option>
- <option value="1191."> Résultat net de l'exercice (solde créditeur)</option>
- <option value="1199."> Résultat net de l'exercice (solde débiteur)</option>
- <option value=" 13."> Capitaux propres assimilés</option>
- <option value="131."> Subventions d'investissement</option>
- <option value="1311."> Subventions d'investissement reçues</option>
- <option value="1319."> Subventions d'investissement inscrites au CPC</option>
- <option value="135."> Provisions réglementées</option>
- <option value="1351."> Provisions pour amortissements dérogatoires</option>
- <option value="1352."> Provisions pour plus-values en instance d'imposition</option>
- <option value="1354."> Provisions pour investissements</option>
- <option value="1355."> Provisions pour reconstitution des gisements</option>
- <option value="1356."> Provisions pour acquisition et construction de logements</option>
- <option value="1358."> Autres provisions réglementées</option>
- <option value=" 14."> Dettes de financement</option>
- <option value="141."> Emprunts obligataires</option>
- <option value="1410."> Emprunts obligataires</option>
- <option value="148."> Autres dettes de financement</option>
- <option value="1481."> Emprunts auprès des établissements de crédit</option>
- <option value="1482."> Avances de l'Etat</option>
- <option value="1483."> Dettes rattachées à des participations</option>
- <option value="1484."> Billets de fonds</option>
- <option value="1485."> Avances reçues et comptes courants bloqués</option>
- <option value="1486."> Fournisseurs d'immobilisation</option>
- <option value="1487."> Dépôts et cautionnements reçues</option>
- <option value="1488."> Dettes de financement diverses</option>
- <option value="15."> Provisions durables pour risques et charges</option>
- <option value="151."> Provisions pour risques</option>
- <option value="1511."> Provisions pour litiges</option>
- <option value="1512."> Provisions pour garanties données aux clients</option>
- <option value="1513."> Provisions pour propre assureur</option>
- <option value="1514."> Provision pour pertes sur marchés à terme</option>
- <option value="1515."> Provisions pour amendes, double droits, pénalités</option>
- <option value="1516."> Provisions pour pertes de change</option>
- <option value="1518."> Autres provisions pour risques</option>
- <option value="155."> Provisions pour charges</option>
- <option value="1551."> Provisions pour impôts</option>
- <option value="1552."> Provisions pour pensions de retraite et obligations similaires</option>
- <option value="1555."> Provisions pour charges à répartir sur plusieurs exercices</option>
- <option value="1558."> Autres provisions pour charges</option>
- <option value="16."> Comptes de liaison des établissements et succursales</option>
- <option value="160."> Comptes de liaison des établissements et succursales</option>
- <option value="1601."> Comptes de liaison du siège</option>
- <option value="1605."> Comptes de liaison des établissements</option>
- <option value="17."> Ecarts de conversion - Passif</option>
- <option value="171."> Augmentation des créances immobilisées</option>
- <option value="1710."> Augmentation des créances immobilisées</option>
- <option value="172."> Diminution des dettes de financement</option>
- <option value="1720."> Diminution des dettes de financement</option>
- <option value="21."> Immobilisations en non-valeurs</option>
- <option value="211."> Frais préliminaires</option>
- <option value="2111."> Frais de constitution</option>
- <option value="2112."> Frais préalables au démarrage</option>
- <option value="2113."> Frais d'augmentation du capital</option>
- <option value="2114."> Frais sur opérations de fusions, scissions et transformations</option>
- <option value="2116."> Frais de prospection</option>
- <option value="2117."> Frais de publicité</option>
- <option value="2118."> Autres frais préliminaires</option>
- <option value="212."> Charges à répartir sur plusieurs exercices</option>
- <option value="2121."> Frais d'acquisition des immobilisations</option>
- <option value="2125."> Frais d'émission des emprunts</option>
- <option value="2128."> Autres charges à répartir</option>
- <option value="213."> Primes de remboursement des obligations</option>
- <option value="2130."> Primes de remboursement des obligations</option>
- <option value="22."> Immobilisations incorporelles</option>
- <option value="221."> Immobilisation en recherche et développement</option>
- <option value="2210."> Immobilisation en recherche et développement</option>
- <option value="2220."> Brevets, marques, droits et valeurs similaires</option>
- <option value="223."> Fonds commercial</option>
- <option value="2230."> Fonds commercial</option>
- <option value="228."> Autres immobilisations incorporelles</option>
- <option value="2285."> Autres immobilisations incorporelles</option>
- <option value="23."> Immobilisations corporelles</option>
- <option value="231."> Terrains</option>
- <option value="2311."> Terrains nus</option>
- <option value="2312."> Terrains aménagés</option>
- <option value="2313."> Terrains bâtis</option>
- <option value="2314."> Terrains de gisement</option>
- <option value="2316."> Agencements et aménagements de terrains</option>
- <option value="2318."> Autres terrains</option>
- <option value="232."> Constructions</option>
- <option value="2321."> Bâtiments</option>
- <option value=" 23211."> Bâtiments industriels (A, B …)</option>
- <option value=" 23214."> Bâtiments administratifs et commerciaux (A, B …)</option>
- <option value=" 23218."> Autres bâtiments</option>
- <option value="2323."> Constructions sur terrains d'autrui</option>
- <option value="2325."> Ouvrages d'infrastructure</option>
- <option value="2327."> Agencements et aménagements des constructions</option>
- <option value="2328."> Autres constructions</option>
- <option value="233."> Installations techniques, matériel et outillage</option>
- <option value="2331."> Installations techniques</option>
- <option value="2332."> Matériel et outillage</option>
- <option value=" 23321."> Matériel</option>
- <option value=" 23324."> Outillage</option>
- <option value="2333."> Emballages récupérables identifiables</option>
- <option value="2338."> Autres installations techniques, matériel et outillage</option>
- <option value="234."> Matériel de transport</option>
- <option value="2340."> Matériel de transport</option>
- <option value="235."> Mobilier, matériel de bureau et aménagements divers</option>
- <option value="2351."> Mobilier de bureau</option>
- <option value="2352."> Matériel de bureau</option>
- <option value="2355."> Matériel informatique</option>
- <option value="2356."> Agencements, installations et aménagements divers (biens n'appartenant pas à l'entreprise)</option>
- <option value="2358."> Autres mobilier, matériel de bureau et aménagements divers</option>
- <option value="238."> Autres immobilisations corporelles</option>
- <option value="2380."> Autres immobilisations corporelles</option>
- <option value="239."> Immobilisations corporelles en cours</option>
- <option value="2392."> Immobilisations corporelles en cours des terrains et constructions</option>
- <option value="2393."> Immobilisations corporelles en cours des installations techniques, matériel et outillage</option>
- <option value="2394."> Immobilisations corporelles en cours de matériel de transport</option>
- <option value="2395."> Immobilisations corporelles en cours de mobilier, matériel de bureau et aménagements divers</option>
- <option value="2397."> Avances et acomptes versés sur commandes d'immobilisations corporelles</option>
- <option value="2398."> Autres immobilisations corporelles en cours</option>
- <option value="24/25."> Immobilisations financières</option>
- <option value="241."> Prêts immobilisés</option>
- <option value="2411."> Prêts au personnel</option>
- <option value="2415."> Prêts aux associés</option>
- <option value="2416."> Billets de fonds</option>
- <option value="2418."> Autres prêts</option>
- <option value="248."> Autres créances financières</option>
- <option value="2481."> Titres immobilisés (droits de créance)</option>
- <option value=" 24811."> Obligations</option>
- <option value=" 24813."> Bons d'équipement</option>
- <option value=" 24818."> Bons divers</option>
- <option value="2483."> Créances rattachées à des participations</option>
- <option value="2486."> Dépôts et cautionnements versés</option>
- <option value="24861."> Dépôts</option>
- <option value=" 24864."> Cautionnements</option>
- <option value="2487."> Créances immobilisées</option>
- <option value="2488."> Créances financières diverses</option>
- <option value="251."> Titres de participation</option>
- <option value="2510."> Titres de participation</option>
- <option value="258."> Autres titres immobilisés</option>
- <option value="2581."> Actions</option>
- <option value="2588."> Titres divers</option>
- <option value=" 27."> Ecarts de conversion - actif</option>
- <option value="271."> Diminution des créances immobilisées</option>
- <option value="2710."> Diminution des créances immobilisées</option>
- <option value="272."> Augmentation des dettes de financement</option>
- <option value="2720."> Augmentation des dettes de financement</option>
- <option value="28."> Amortissements des immobilisations</option>
- <option value="281."> Amortissements des non-valeurs</option>
- <option value="2811."> Amortissements des frais préliminaires</option>
- <option value=" 28111."> Amortissements des frais de constitution</option>
- <option value=" 28112."> Amortissements des frais préliminaires au démarrage</option>
- <option value=" 28113."> Amortissements des frais d'augmentation du capital</option>
- <option value=" 28114."> Amortissements des frais sur opérations de fusions, scissions, et transformations</option>
- <option value=" 28116."> Amortissements des frais de prospection</option>
- <option value=" 28117."> Amortissements des frais de publicité</option>
- <option value=" 28118."> Amortissements des autres frais préliminaires</option>
- <option value="2812."> Amortissements des charges à répartir</option>
- <option value=" 28121."> Amortissements des frais d'acquisition des immobilisations</option>
- <option value=" 28125."> Amortissements des frais d'émission des emprunts</option>
- <option value=" 28128."> Amortissements des autres charges à répartir</option>
- <option value="2813."> Amortissements des primes de remboursement des obligations</option>
- <option value="282."> Amortissements des immobilisations incorporelles</option>
- <option value="2821."> Amortissements de l'immobilisation en recherche et développement</option>
- <option value="2822."> Amortissements des brevets, marques, droits et valeurs similaires</option>
- <option value="2823."> Amortissements du fonds commercial</option>
- <option value="2828."> Amortissements des autres immobilisations incorporelles</option>
- <option value="283.">Amortissements des immobilisations corporelles</option>
- <option value="2831."> Amortissements des terrains</option>
- <option value=" 28311."> Amortissements des terrains nus</option>
- <option value=" 28312."> Amortissements des terrains aménagés</option>
- <option value=" 28313."> Amortissements des terrains bâtis</option>
- <option value=" 28314."> Amortissements des terrains de gisement</option>
- <option value=" 28136."> Amortissements des agencements et aménagements de terrains</option>
- <option value=" 28138."> Amortissements des autres terrains</option>
- <option value="2832."> Amortissements des constructions</option>
- <option value="28321."> Amortissements des bâtiments</option>
- <option value=" 28323."> Amortissements des constructions sur terrains d'autrui</option>
- <option value=" 28325."> Amortissements des ouvrages d'infrastructure</option>
- <option value=" 28327."> Amortissements des installations, agencements et aménagements des constructions</option>
- <option value=" 28328."> Amortissements des autres constructions</option>
- <option value="2833."> Amortissements des installations techniques, matériel et outillage</option>
- <option value=" 28331."> Amortissements des installations techniques</option>
- <option value=" 28332."> Amortissements du matériel et outillage</option>
- <option value=" 28333."> Amortissements des emballages récupérables identifiables</option>
- <option value=" 28338."> Amortissements des autres installations techniques, matériel et outillage</option>
- <option value="2834."> Amortissements du matériel de transport</option>
- <option value="2835."> Amortissements du mobilier, matériel de bureau et aménagements divers</option>
- <option value=" 28351."> Amortissements du mobilier de bureau</option>
- <option value=" 28352."> Amortissements du matériel de bureau</option>
- <option value=" 28355."> Amortissements du matériel informatique</option>
- <option value=" 28356."> Amortissements des agencements, installations et aménagements divers</option>
- <option value=" 28358."> Amortissements des autres mobiliers, matériels de bureau et aménagements divers</option>
- <option value="2838."> Amortissements des autres immobilisations corporelles</option>
- <option value="29."> Provisions pour dépréciation des immobilisations</option>
- <option value="292."> Provisions pour dépréciation des immobilisations incorporelles</option>
- <option value="2920."> Provisions pour dépréciation des immobilisations incorporelles</option>
- <option value="293."> Provisions pour dépréciation des immobilisations corporelles</option>
- <option value="2930."> Provisions pour dépréciation des immobilisations corporelles</option>
- <option value="294/295."> Provisions pour dépréciation des immobilisations financières</option>
- <option value="2941."> Provisions pour dépréciation des prêts immobilisés</option>
- <option value="2948."> Provisions pour dépréciation des autres créances financières</option>
- <option value="2951."> Provisions pour dépréciation des titres de participation</option>
- <option value="2958."> Provisions pour dépréciation des autres titres immobilisés</option>
- <option value="31."> Stocks</option>
- <option value="311."> Marchandises</option>
- <option value="3111."> Marchandises (groupe A)</option>
- <option value="3112."> Marchandises (groupe B)</option>
- <option value="3116."> Marchandises en cours de route</option>
- <option value="3118."> Autres marchandises</option>
- <option value="312."> Matières et fournitures consommables</option>
- <option value="3121."> Matières premières</option>
- <option value=" 31211."> Matières premières (groupe A)</option>
- <option value=" 31212."> Matières premières (groupe B)</option>
- <option value="3122."> Matières et fournitures consommables</option>
- <option value=" 31221."> Matières consommables (groupe A)</option>
- <option value=" 31222."> Matières consommables (groupe B)</option>
- <option value=" 31223."> Combustibles</option>
- <option value=" 31224."> Produits d'entretien</option>
- <option value=" 31225."> Fournitures d'atelier et d'usine</option>
- <option value=" 31226."> Fournitures de magasin</option>
- <option value=" 31227."> Fournitures de bureau</option>
- <option value="3123."> Emballages</option>
- <option value=" 31231."> Emballages perdus</option>
- <option value=" 31232."> Emballages récupérables non identifiables</option>
- <option value=" 31233."> Emballages à usage mixte</option>
- <option value="3126."> Matières et fournitures consommables en cours de route</option>
- <option value="3128."> Autres matières et fournitures consommables</option>
- <option value="313."> Produits en cours</option>
- <option value="3131."> Biens en cours</option>
- <option value=" 31311."> Biens produits en cours</option>
- <option value=" 31312."> Biens intermédiaires en cours</option>
- <option value=" 31317."> Biens résiduels en cours</option>
- <option value="3134."> Services en cours</option>
- <option value=" 31341."> Travaux en cours</option>
- <option value=" 31342."> Etudes en cours</option>
- <option value=" 31343."> Prestations en cours</option>
- <option value="3138."> Autres produits en cours</option>
- <option value="314."> Produits intermédiaires et produits résiduels</option>
- <option value="3141."> Produits intermédiaires</option>
- <option value="31411."> Produits intermédiaires (groupe A)</option>
- <option value=" 31412."> Produits intermédiaires (groupe B)</option>
- <option value=" 3145."> Produits résiduels (ou matières de récupération)</option>
- <option value=" 31451."> Déchets</option>
- <option value=" 31452."> Rebuts</option>
- <option value=" 31453."> Matières de récupération</option>
- <option value="3148."> Autres produits intermédiaires et produits résiduels</option>
- <option value="315."> Produits finis</option>
- <option value="3151."> Produits finis (groupe A)</option>
- <option value="3152."> Produits finis (groupe B)</option>
- <option value="3156."> Produits finis en cours de route</option>
- <option value="3158."> Autres produits finis</option>
- <option value="34."> Créances de l'actif circulant</option>
- <option value="341."> Fournisseurs débiteurs, avances et acomptes</option>
- <option value="3411."> Fournisseurs - avances et acomptes versés sur commandes d'exploitation</option>
- <option value="3413."> Fournisseurs - créances pour emballages et matériel à rendre</option>
- <option value="3417."> Rabais, remises et ristournes à obtenir - avoirs non encore reçus</option>
- <option value="3418."> Autres fournisseurs débiteurs</option>
- <option value="342."> Clients et comptes rattachés</option>
- <option value="3421."> Clients</option>
- <option value=" 34211."> Clients - catégorie A</option>
- <option value=" 34212."> Clients - catégorie B</option>
- <option value="3423."> Clients - retenues de garantie</option>
- <option value="3424."> Clients douteux ou litigieux</option>
- <option value="3425."> Clients - effets à recevoir</option>
- <option value="3427."> Clients - factures à établir et créances sur travaux non encore facturés</option>
- <option value=" 34271."> Clients - factures à établir</option>
- <option value=" 34272."> Créances sur travaux non encore facturables</option>
- <option value="3428."> Autres clients et comptes rattachés</option>
- <option value="343."> Personnel - débiteur</option>
- <option value="3431."> Avances et acomptes au personnel</option>
- <option value="3438."> Personnel - autres débiteurs</option>
- <option value="345."> Etat - débiteur</option>
- <option value="3451."> Subventions à recevoir</option>
- <option value=" 34511."> Subventions d'investissement à recevoir</option>
- <option value=" 34512."> Subventions d'exploitation à recevoir</option>
- <option value=" 34513."> Subventions d'équilibre à recevoir</option>
- <option value="3453."> Acomptes sur impôts sur les résultats</option>
- <option value="3455."> Etat - TVA récupérable</option>
- <option value=" 34551."> Etat - TVA récupérable sur immobilisations</option>
- <option value=" 34552."> Etat - TVA récupérable sur charges</option>
- <option value="3456."> Etat - crédit de TVA (suivant déclaration)</option>
- <option value="3458."> Etat - autres comptes débiteurs</option>
- <option value="346."> Comptes d'associés - débiteurs</option>
- <option value="3461."> Associés comptes d'apport en société</option>
- <option value="3462."> Actionnaires - capital souscrit et appelé non versé</option>
- <option value="3463."> Comptes courants des associés débiteurs</option>
- <option value="3464."> Associés - opérations faites en commun</option>
- <option value="3467."> Créances rattachées aux comptes d'associés</option>
- <option value="3468."> Autres comptes d'associés débiteurs</option>
- <option value="348."> Autres débiteurs</option>
- <option value="3481."> Créances sur cessions d'immobilisations</option>
- <option value="3482."> Créances sur cessions d'éléments d'actif circulant</option>
- <option value="3487."> Créances rattachées aux autres débiteurs</option>
- <option value="3488."> Divers débiteurs</option>
- <option value="349."> Comptes de régularisation - actif</option>
- <option value="3491."> Charges constatées d'avance</option>
- <option value="3493."> Intérêts courus et non échus à percevoir</option>
- <option value="3495."> Comptes de répartition périodique des charges</option>
- <option value="3497."> Comptes transitoires ou d'attente – débiteurs</option>
- <option value="35."> Titres et valeurs de placement</option>
- <option value="350."> Titres et valeurs de placement</option>
- <option value="3501."> Actions, partie libérée</option>
- <option value="3502."> Actions, partie non libérée</option>
- <option value="3504."> Obligations</option>
- <option value="3506."> Bons de caisse et bons de trésor</option>
- <option value=" 35061."> Bons de caisse</option>
- <option value=" 35062."> Bons de trésor</option>
- <option value="3508."> Autres titres et valeurs de placement similaires</option>
- <option value="37."> Ecart de conversion - actif (Eléments circulants)</option>
- <option value="370."> Ecart de conversion - Actif (éléments circulants)</option>
- <option value="3701."> Diminution des créances circulantes</option>
- <option value="3702."> Augmentation des dettes circulantes</option>
- <option value="39."> Provisions pour dépréciation des comptes de l'actif circulant</option>
- <option value="391."> Provisions pour dépréciation des stocks</option>
- <option value="3911."> Provisions pour dépréciation des marchandises</option>
- <option value="3912."> Provisions pour dépréciation des matières et fournitures</option>
- <option value="3913."> Provisions pour dépréciation des produits en cours</option>
- <option value="3914."> Provisions pour dépréciation des produits intermédiaires</option>
- <option value="3915."> Provisions pour dépréciation des produits finis</option>
- <option value=" 394."> Provisions pour dépréciation des créances de l'actif circulant</option>
- <option value="3941."> Provisions pour dépréciation - fournisseurs débiteurs, avances et acomptes</option>
- <option value="3942."> Provisions pour dépréciation des clients et comptes rattachés</option>
- <option value="3943."> Provisions pour dépréciation du personnel - débiteur</option>
- <option value="3946."> Provisions pour dépréciation des comptes d'associés débiteurs</option>
- <option value="3948."> Provisions pour dépréciation des autres débiteurs</option>
- <option value=" 395."> Provisions pour dépréciation des titres et valeurs de placement</option>
- <option value="3950."> Provisions pour dépréciation des titres et valeurs de placement</option>
- <option value="44."> Dettes du passif circulant</option>
- <option value="441."> Fournisseurs et comptes rattachés</option>
- <option value="4411."> Fournisseurs</option>
- <option value=" 44111."> Fournisseurs - catégorie A</option>
- <option value=" 44112."> Fournisseurs - catégorie B</option>
- <option value="4413."> Fournisseurs - retenues de garantie</option>
- <option value="4415."> Fournisseurs - effets à payer</option>
- <option value="4417."> Fournisseurs - factures non parvenues</option>
- <option value="4418."> Autres fournisseurs et comptes rattachés</option>
- <option value="442."> Clients créditeurs, avances et acomptes</option>
- <option value="4421."> Clients - avances et acomptes reçus sur commandes en cours</option>
- <option value="4425."> Clients - dettes pour emballages et matériel consignés</option>
- <option value="4427."> Rabais, remises et ristournes à accorder - avoirs à établir</option>
- <option value="4428."> Autres clients créditeurs</option>
- <option value="443."> Personnel - créditeur</option>
- <option value="4432."> Rémunérations dues au personnel</option>
- <option value="4433."> Dépôts du personnel créditeurs</option>
- <option value="4434."> Oppositions sur salaires</option>
- <option value="4437."> Charges du personnel à payer</option>
- <option value="4438."> Personnel - autres créditeurs</option>
- <option value="444."> Organismes sociaux</option>
- <option value="4441."> Caisse Nationale de la Sécurité Sociale</option>
- <option value="4443."> Caisses de retraite</option>
- <option value="4445."> Mutuelles</option>
- <option value="4447."> Charges sociales à payer</option>
- <option value="4448."> Autres organismes sociaux</option>
- <option value="445."> Etat - créditeur</option>
- <option value="4452."> Etat Impôts, taxes et assimilés</option>
- <option value=" 44521."> Etat, taxe urbaine et taxe d'édilité</option>
- <option value=" 44522."> Etat, patente</option>
- <option value=" 44525."> Etat, IGR</option>
- <option value="4453."> Etat, impôts sur les résultats</option>
- <option value="4455."> Etat, TVA facturée</option>
- <option value="4456."> Etat, TVA due (suivant déclarations)</option>
- <option value="4457."> Etat, impôts et taxes à payer</option>
- <option value="4458."> Etat - autres comptes créditeurs</option>
- <option value="446."> Comptes d'associés - créditeurs</option>
- <option value="4461."> Associés - capital à rembourser</option>
- <option value="4462."> Associés - versements reçus sur augmentation de capital</option>
- <option value="4463."> Comptes courants des associés créditeurs</option>
- <option value="4464."> Associés - opérations faites en commun</option>
- <option value="4465."> Associés - dividendes à payer</option>
- <option value="4468."> Autres comptes d'associés - créditeurs</option>
- <option value="448."> Autres créanciers</option>
- <option value="4481."> Dettes sur acquisitions d'immobilisations</option>
- <option value="4483."> Dettes sur acquisitions de titres et valeurs de placement</option>
- <option value=" 4484."> Obligations échues à rembourser</option>
- <option value="4485."> Obligations, coupons à payer</option>
- <option value="4487."> Dettes rattachées aux autres créanciers</option>
- <option value="4488."> Divers créanciers</option>
- <option value="449."> Comptes de régularisation - passif</option>
- <option value="4491."> Produits constatés d'avance</option>
- <option value="4493."> Intérêts courus et non échus à payer</option>
- <option value="4495."> Comptes de répartition périodique des produits</option>
- <option value="4497."> Comptes transitoires ou d'attente – créditeurs</option>
- <option value=" 45."> Autres provisions pour risques et charges</option>
- <option value="450."> Autres provisions pour risques et charges</option>
- <option value="4501."> Provisions pour litiges</option>
- <option value="4502."> Provisions pour garanties données aux clients</option>
- <option value="4505."> Provisions pour amendes, doubles droits et pénalités</option>
- <option value="4506."> Provisions pour pertes de change</option>
- <option value="4507."> Provisions pour impôts</option>
- <option value="4508."> Autres provisions pour risques et charges</option>
- <option value=" 47."> ECARTS DE CONVERSION - PASSIF (Eléments circulants)</option>
- <option value="470."> Ecarts de conversion - passif (Eléments circulants)</option>
- <option value="4701."> Augmentation des créances circulantes</option>
- <option value="4702."> Diminution des dettes circulantes</option>
- <option value="51."> Trésorerie - actif</option>
- <option value="511."> Chèques et valeurs à encaisser</option>
- <option value="5111."> Chèques à encaisser ou à l'encaissement</option>
- <option value=" 51111."> Chèques en portefeuille</option>
- <option value=" 51112."> Chèques à l'encaissement</option>
- <option value="5113."> Effets à encaisser ou à l'encaissement</option>
- <option value=" 51131."> Effets échus à encaisser</option>
- <option value=" 51132."> Effets à l'encaissement</option>
- <option value="5115."> Virement de fonds</option>
- <option value="5118."> Autres valeurs à encaisser</option>
- <option value="514."> Banques, Trésorerie Générale et chèques postaux débiteurs</option>
- <option value="5141."> Banques (solde débiteur)</option>
- <option value="5143."> Trésorerie Générale</option>
- <option value="5146."> Chèques postaux</option>
- <option value="5148."> Autres établissements financiers et assimilés (soldes débiteurs)</option>
- <option value="516."> Caisses, régies d'avances et accréditifs</option>
- <option value="5161."> Caisses</option>
- <option value=" 51611."> Caisse Centrale</option>
- <option value=" 51613."> Caisse (succursale ou agence A)</option>
- <option value=" 51614."> Caisse (succursale ou agence B)</option>
- <option value="5165."> Régies d'avances et accréditifs</option>
- <option value=" 55."> Trésorerie - passif</option>
- <option value="552."> Crédits d'escompte</option>
- <option value="5520."> Crédits d'escompte</option>
- <option value="553."> Crédits de trésorerie</option>
- <option value="5530."> Crédits de trésorerie</option>
- <option value="554."> Banques (solde créditeur)</option>
- <option value="5541."> Banques (solde créditeur)</option>
- <option value="5548."> Autres établissements financiers et assimilés (soldes créditeurs)</option>
- <option value="59."> Provisions pour dépréciation des comptes de trésorerie</option>
- <option value="590."> Provisions pour dépréciation des comptes de trésorerie</option>
- <option value="5900."> Provisions pour dépréciation des comptes de trésorerie</option>
- <option value="61."> Charges d'exploitation</option>
- <option value="611."> Achats revendus de marchandises</option>
- <option value="6111."> Achats de marchandises "groupe A"</option>
- <option value="6112."> Achats de marchandises "groupe B"</option>
- <option value="6114."> Variation de stocks de marchandises</option>
- <option value="6118."> Achats revendus de marchandises des exercices antérieurs</option>
- <option value="6119."> Rabais, remises et ristournes obtenus sur achats de marchandises</option>
- <option value="612."> Achats consommés de matières et fournitures</option>
- <option value="6121."> Achats de matières premières</option>
- <option value=" 61211."> Achats de matières premières A</option>
- <option value=" 61212."> Achats de matières premières B</option>
- <option value="6122."> Achats de matières et fournitures consommables</option>
- <option value="61221."> Achats de matières et fournitures A</option>
- <option value=" 61222."> Achats de matières et fournitures B</option>
- <option value=" 61223."> Achats de combustibles</option>
- <option value=" 61224."> Achats de produits d'entretien</option>
- <option value=" 61225."> Achats de fournitures d'atelier et d'usine</option>
- <option value=" 61226."> Achats de fournitures de magasin</option>
- <option value=" 61227."> Achats de fournitures de bureau</option>
- <option value="6123."> Achats d'emballages</option>
- <option value="61231."> Achats d'emballages perdus</option>
- <option value=" 61232."> Achats d'emballages récupérables non identifiables</option>
- <option value=" 61233."> Achats d'emballages à usage mixte</option>
- <option value="6124."> Variation des stocks de matières et fournitures</option>
- <option value="61241."> Variation des stocks de matières premières</option>
- <option value=" 61242."> Variation des stocks de matières et fournitures consommables</option>
- <option value=" 61243."> Variation des stocks des emballages</option>
- <option value="6125."> Achats non stockés de matières et fournitures</option>
- <option value=" 61251."> Achats de fournitures non stockables (eau, électricité,)</option>
- <option value=" 61252."> Achats de fournitures d'entretien</option>
- <option value=" 61253."> Achats de petit outillage et petit équipement</option>
- <option value=" 61254."> Achats de fournitures de bureau</option>
- <option value="6126."> Achats de travaux, études et prestations de service</option>
- <option value="61261."> Achats des travaux</option>
- <option value=" 61262."> Achats des études</option>
- <option value=" 61263."> Achats des prestations de service</option>
- <option value="6128."> Achats de matières et de fournitures des exercices antérieurs</option>
- <option value="6129."> Rabais, remises et ristournes obtenus sur achats consommés de matières et fournitures</option>
- <option value=" 61291."> Rabais, remises et ristournes obtenus sur achats de matières premières</option>
- <option value=" 61292."> Rabais, remises et ristournes obtenus sur achats de matières et fournitures consommables</option>
- <option value=" 61293."> Rabais, remises et ristournes obtenus sur achats des emballages</option>
- <option value=" 61295."> Rabais, remises et ristournes obtenus sur achats non stockés</option>
- <option value=" 61296."> Rabais, remises et ristournes obtenus sur achats de travaux, études et prestations de service</option>
- <option value=" 61298."> Rabais, remises et ristournes obtenus sur achats de matières et fournitures des exercices antérieurs</option>
- <option value="613/614."> Autres charges externes</option>
- <option value="6131."> Locations et charges locatives</option>
- <option value="61311."> Locations de terrains</option>
- <option value=" 61312."> Locations de constructions</option>
- <option value=" 61313."> Locations de matériel et d'outillage</option>
- <option value=" 61314."> Locations de mobilier et de matériel de bureau</option>
- <option value=" 61315."> Locations de matériel informatique</option>
- <option value=" 61316."> Locations de matériel de transport</option>
- <option value=" 61317."> Malis sur emballages rendus</option>
- <option value=" 61318."> Locations et charges locatives diverses</option>
- <option value="6132."> Redevances de crédit-bail</option>
- <option value="61321."> Redevances de crédit-bail - mobilier et matériel</option>
- <option value="6133."> Entretien et réparations</option>
- <option value=" 61331."> Entretien et réparations des biens immobiliers</option>
- <option value=" 61332."> Entretien et réparations des biens mobiliers</option>
- <option value=" 61335."> Maintenance</option>
- <option value="6134."> Primes d'assurances</option>
- <option value="61341."> Assurances multirisque (vol, incendie, R.C,)</option>
- <option value=" 61343."> Assurances - risques d'exploitation</option>
- <option value=" 61345."> Assurances - Matériel de transport</option>
- <option value=" 61348."> Autres assurances</option>
- <option value="6135."> Rémunérations du personnel extérieur à l'entreprise</option>
- <option value="61351."> Rémunérations du personnel occasionnel</option>
- <option value=" 61352."> Rémunérations du personnel intérimaire</option>
- <option value=" 61353."> Rémunérations du personnel détaché ou prêté à l'entreprise</option>
- <option value="6136."> Rémunérations d'intermédiaires et honoraires</option>
- <option value=" 61361."> Commissions et courtages</option>
- <option value=" 61365."> Honoraires</option>
- <option value=" 61367."> Frais d'actes et de contentieux</option>
- <option value="6137."> Redevances pour brevets, marques, droits et valeurs similaires</option>
- <option value="61371."> Redevances pour brevets</option>
- <option value=" 61378."> Autres redevances</option>
- <option value="6141."> Etudes, recherches et documentation</option>
- <option value="61411."> Etudes générales</option>
- <option value=" 61413."> Recherches</option>
- <option value=" 61415."> Documentation générale</option>
- <option value=" 61416."> Documentation technique</option>
- <option value="6142."> Transports</option>
- <option value="61421."> Transports du personnel</option>
- <option value=" 61425."> Transports sur achats</option>
- <option value=" 61426."> Transports sur ventes</option>
- <option value=" 61428."> Autres transports</option>
- <option value="6143."> Déplacements, missions et réceptions</option>
- <option value="61431."> Voyages et déplacements</option>
- <option value=" 61433."> Frais de déménagement</option>
- <option value=" 61435."> Missions</option>
- <option value=" 61436."> Réceptions</option>
- <option value="6144."> Publicité, publications et relations publiques</option>
- <option value="61441."> Annonces et insertions</option>
- <option value=" 61442."> Echantillons, catalogues et imprimés publicitaires</option>
- <option value=" 61443."> Foires et expositions</option>
- <option value=" 61444."> Primes de publicité</option>
- <option value=" 61446."> Publications</option>
- <option value=" 61447."> Cadeaux à la clientèle</option>
- <option value=" 61448."> Autres charges de publicité et relations publiques</option>
- <option value="6145."> Frais postaux et frais de télécommunications</option>
- <option value=" 61451."> Frais postaux</option>
- <option value=" 61455."> Frais de téléphone</option>
- <option value=" 61456."> Frais de télex et de télégrammes</option>
- <option value="6146."> Cotisations et dons</option>
- <option value=" 61461."> Cotisations</option>
- <option value=" 61462."> Dons</option>
- <option value="6147."> Services bancaires</option>
- <option value="61471."> Frais d'achat et de vente des titres</option>
- <option value=" 61472."> Frais sur effets de commerce</option>
- <option value=" 61473."> Frais et commissions sur services bancaires</option>
- <option value="6148."> Autres charges externes des exercices antérieurs</option>
- <option value="6149."> Rabais, remises et ristournes obtenus sur autres charges externes</option>
- <option value="616."> Impôts et taxes</option>
- <option value="6161."> Impôts et taxes directs</option>
- <option value=" 61611."> Taxe urbaine et taxe d'édilité</option>
- <option value=" 61612."> Patente</option>
- <option value=" 61615."> Taxes locales</option>
- <option value="6165."> Impôts et taxes directs</option>
- <option value="6167."> Impôts, taxes et droits assimilés</option>
- <option value=" 61671."> Droits d’enregistrement et de timbre</option>
- <option value=" 61673."> Taxes sur les véhicules</option>
- <option value=" 61678."> Autres impôts, taxes et droits assimilés</option>
- <option value="6168."> Impôts et taxes des exercices antérieurs</option>
- <option value="617."> Charges de personnel</option>
- <option value="6171."> Rémunérations du personnel</option>
- <option value="61711."> Appointements et salaires</option>
- <option value=" 61712."> Primes et gratifications</option>
- <option value=" 61713."> Indemnités et avantages divers</option>
- <option value=" 61714."> Commissions au personnel</option>
- <option value=" 61715."> Rémunérations des administrateurs, gérants et associés</option>
- <option value="6174."> Charges sociales</option>
- <option value=" 61741."> Cotisations de sécurité sociale</option>
- <option value=" 61742."> Cotisations aux caisses de retraite</option>
- <option value=" 61743."> Cotisations aux mutuelles</option>
- <option value=" 61744."> Prestations familiales</option>
- <option value=" 61745."> Assurances accidents de travail</option>
- <option value="6176."> Charges sociales diverses</option>
- <option value=" 61761."> Assurances groupe</option>
- <option value=" 61762."> Prestations de retraites</option>
- <option value=" 61763."> Allocations aux œuvres sociales</option>
- <option value=" 61764."> Habillement et vêtements de travail</option>
- <option value=" 61765."> Indemnités de préavis et de licenciement</option>
- <option value=" 61766."> Médecine de travail, pharmacie</option>
- <option value=" 61768."> Autres charges sociales diverses</option>
- <option value="6177."> Rémunération de l'exploitant</option>
- <option value="61771."> Appointements et salaires</option>
- <option value=" 61774."> Charges sociales sur appointements et salaires de l’exploitant</option>
- <option value="6178."> Charges du personnel des exercices antérieurs</option>
- <option value="618."> Autres charges d'exploitation</option>
- <option value="6181."> Jetons de présence</option>
- <option value="6182."> Pertes sur créances irrécouvrables</option>
- <option value="6185."> Pertes sur opérations faites en commun</option>
- <option value="6186."> Transfert de profits sur opérations faites en commun</option>
- <option value="6188."> Autres charges d’exploitation des exercices antérieurs</option>
- <option value="619."> Dotations d’exploitation</option>
- <option value="6191."> Dotations d’exploitation aux amortissements de l’immobilisation en non valeur</option>
- <option value="61911."> D.E.A. des frais préliminaires</option>
- <option value=" 61912."> D.E.A. des charges à répartir</option>
- <option value="6192."> Dotations d’exploitation aux amortissements des immobilisations incorporelles</option>
- <option value=" 61921."> D.E.A. de l’immobilisation en recherche et développement</option>
- <option value=" 61922."> D.E.A. des brevets, marques, droits et valeurs similaires</option>
- <option value=" 61923."> D.E.A. du fonds commercial</option>
- <option value=" 61928."> D.E.A. des autres immobilisations incorporelles</option>
- <option value="6193."> Dotations d’exploitation aux amortissements des immobilisations corporelles</option>
- <option value="61931."> D.E.A. des terrains</option>
- <option value=" 61932."> D.E.A. des constructions</option>
- <option value=" 61933."> D.E.A. des installations techniques, matériel et outillage</option>
- <option value=" 61934."> D.E.A. du matériel de transport</option>
- <option value=" 61935."> D.E.A. des mobiliers, matériels de bureau et aménagements divers</option>
- <option value=" 61938."> D.E.A. des autres immobilisations corporelles</option>
- <option value="6194."> Dotations d’exploitation aux provisions pour dépréciation des immobilisations</option>
- <option value=" 61942."> D.E.P. pour dépréciation des immobilisations incorporelles</option>
- <option value=" 61943."> D.E.P. pour dépréciation des immobilisations corporelles</option>
- <option value="6195."> Dotations d’exploitation aux provisions pour risques et charges</option>
- <option value=" 61955."> D.E.P. pour risques et charges durables</option>
- <option value=" 91957."> D.E.P. pour risques et charges momentanés</option>
- <option value="6196."> Dotations d’exploitation aux provisions pour dépréciations de l’actif circulant</option>
- <option value=" 61961."> D.E.P. pour dépréciation des stocks</option>
- <option value=" 61964."> D.E.P. pour dépréciation des créances de l’actif circulant</option>
- <option value="6198."> Dotations d’exploitation des exercices antérieurs</option>
- <option value=" 61981."> D.E. aux amortissements des exercices antérieurs</option>
- <option value=" 61984."> D.E. aux provisions des exercices antérieurs</option>
- <option value="63."> Charges financières</option>
- <option value="631."> Charges d’intérêts</option>
- <option value="6311."> Intérêts des emprunts et dettes</option>
- <option value=" 63111."> Intérêts des emprunts</option>
- <option value=" 63113."> Intérêts des dettes rattachées à des participations</option>
- <option value=" 63114."> Intérêts des comptes courants et dépôts créditeurs</option>
- <option value=" 63115."> Intérêts bancaires et sur opérations de financement</option>
- <option value=" 63118."> Autres intérêts des emprunts et dettes</option>
- <option value="6318."> Charges d’intérêts des exercices antérieurs</option>
- <option value="633."> Pertes de change</option>
- <option value="6331."> Pertes de change propres à l’exercice</option>
- <option value="6338."> Pertes de change des exercices antérieurs</option>
- <option value="638."> Autres charges financières</option>
- <option value="6382."> Pertes sur créances liées à des participations</option>
- <option value="6385."> Charges nettes sur cession de titres et valeurs de placement</option>
- <option value="6386."> Escomptes accordés</option>
- <option value="6388."> Autres charges financières des exercices antérieurs</option>
- <option value="639."> Dotations financières</option>
- <option value="6391."> Dotations aux amortissements des primes de remboursement des obligations</option>
- <option value="6392."> Dotations aux provisions pour dépréciations des immobilisations financières</option>
- <option value="6393."> Dotations aux provisions pour risques et charges financières</option>
- <option value="6394."> Dotation aux provisions pour dépréciation des titres et valeurs de placement</option>
- <option value="6396."> Dotations aux provisions pour dépréciation des comptes de trésorerie</option>
- <option value="6398."> Dotations financières des exercices antérieurs</option>
- <option value="65."> Charges non courantes</option>
- <option value="651."> Valeurs nettes d’amortissements des immobilisations cédées (V.N.A)</option>
- <option value="6512."> VNA des immobilisations incorporelles cédées</option>
- <option value="6513."> VNA des immobilisations corporelles cédées</option>
- <option value="6514."> VNA provisions des immobilisations financières cédées (droits de propriété)</option>
- <option value="6518."> VNA des immobilisations cédées des exercices antérieurs</option>
- <option value="656."> Subventions accordées</option>
- <option value="6561."> Subventions accordées de l’exercice</option>
- <option value="6568."> Subventions accordées des exercices antérieurs</option>
- <option value="658."> Autres charges non courantes</option>
- <option value="6581."> Pénalités sur marchés et dédits</option>
- <option value=" 65811."> Pénalités sur marchés</option>
- <option value="65812."> Dédits</option>
- <option value="6582."> Rappels d’impôts (autres qu’impôts sur les résultats)</option>
- <option value="6583."> Pénalités et amendes fiscales ou pénales</option>
- <option value="65831."> Pénalités et amendes fiscales</option>
- <option value=" 65833."> Pénalités et amendes pénales</option>
- <option value="6585."> Créances devenues irrécouvrables</option>
- <option value="6586."> Dons, libéralités et lots</option>
- <option value="65861."> Dons</option>
- <option value=" 65862."> Libéralités</option>
- <option value=" 65863."> Lots</option>
- <option value="6588."> Autres charges non courantes des exercices antérieurs</option>
- <option value="659."> Dotations non courantes</option>
- <option value="6591."> Dotations aux amortissements exceptionnels des immobilisations</option>
- <option value="65911."> D.A.E. de l’immobilisation en non-valeurs</option>
- <option value=" 65912."> D.A.E. des immobilisations incorporelles</option>
- <option value=" 65913."> D.A.E. des immobilisations corporelles</option>
- <option value="6594."> Dotations non courantes aux provisions réglementées</option>
- <option value="65941."> D.N.C. pour amortissements dérogatoires</option>
- <option value=" 65942."> D.N.C. pour plus-values en instance d'imposition</option>
- <option value=" 65944."> D.N.C. pour investissements</option>
- <option value=" 65945."> D.N.C. pour reconstitution de gisements</option>
- <option value=" 65946."> D.N.C. pour acquisition et construction de logements</option>
- <option value="6595."> Dotations non courantes aux provisions pour risques et charges</option>
- <option value="65955."> D.N.C. aux provisions pour risques et charges durables</option>
- <option value=" 65957."> D.N.C. aux provisions pour risques et charges momentanés</option>
- <option value="6596."> Dotations non courantes aux provisions pour dépréciation</option>
- <option value=" 65962."> D.N.C. aux provisions pour dépréciation de l’actif immobilisé</option>
- <option value=" 65963."> D.N.C. aux provisions pour dépréciation de l’actif circulant</option>
- <option value="6598."> Dotations non courantes des exercices antérieurs</option>
- <option value="67."> Impôts sur les résultats</option>
- <option value="670."> Impôts sur les résultats</option>
- <option value="6701."> Impôts sur les bénéfices</option>
- <option value="6705."> Imposition minimale annuelle des sociétés</option>
- <option value="6708."> Rappels et dégrèvements d’impôts sur les résultats</option>
- <option value="71."> Produits d’exploitation</option>
- <option value="711."> Ventes de marchandises</option>
- <option value="7111."> Ventes de marchandises au Maroc</option>
- <option value="7113."> Ventes de marchandises à l’étranger</option>
- <option value="7118."> Ventes de marchandises des exercices antérieurs</option>
- <option value="7119."> Rabais, remises et ristournes accordés par l’entreprise</option>
- <option value="712."> Ventes de biens et services produits</option>
- <option value="7121."> Ventes de biens produits au Maroc</option>
- <option value=" 71211."> Ventes de produits finis</option>
- <option value=" 71212."> Ventes de produits intermédiaires</option>
- <option value=" 71217."> Ventes de produits résiduels</option>
- <option value="7122."> Ventes de biens produits à l’étranger</option>
- <option value="71221."> Ventes de produits finis</option>
- <option value=" 71222."> Ventes de produits intermédiaires</option>
- <option value="7124."> Ventes de services produits au Maroc</option>
- <option value=" 71241."> Travaux</option>
- <option value=" 71242."> Etudes</option>
- <option value=" 71243."> Prestations de services</option>
- <option value="7125."> Ventes de services produits à l'étranger</option>
- <option value=" 71251."> Travaux</option>
- <option value=" 71252."> Etudes</option>
- <option value=" 71253."> Prestations de services</option>
- <option value="7126."> Redevances pour brevets, marques, droits et valeurs similaires</option>
- <option value="7127."> Ventes de produits accessoires</option>
- <option value="71271."> Locations divers reçues</option>
- <option value=" 71272."> Commissions et courtages reçus</option>
- <option value=" 71273."> Produits de services exploités dans l'intérêt du personnel</option>
- <option value=" 71275."> Bonis sur reprises d'emballages consignés</option>
- <option value=" 71276."> Ports et frais accessoires facturés</option>
- <option value=" 71278."> Autres ventes et produits accessoires</option>
- <option value="7128."> Ventes de biens et services produits des exercices antérieurs</option>
- <option value="7129."> Rabais, remises et ristournes accordés par l’entreprise</option>
- <option value="71291."> R.R.R accordées sur ventes au Maroc des biens produits</option>
- <option value=" 71292."> R.R.R accordées sur ventes à l'étranger des biens produits</option>
- <option value=" 71294."> R.R.R accordées sur ventes au Maroc des services produits</option>
- <option value=" 71295."> R.R.R accordées sur ventes à l'étranger des services produits</option>
- <option value=" 71298."> Rabais, remises et ristournes accordés sur ventes de biens et services produits des exercices antérieurs</option>
- <option value="713."> Variation des stocks de produits</option>
- <option value="7131."> Variation des stocks de produits en cours</option>
- <option value=" 71311."> Variation des stocks de biens produits en cours</option>
- <option value=" 71312."> Variation des stocks de produits intermédiaires en cours</option>
- <option value=" 71317."> Variation des stocks de produits résiduels en cours</option>
- <option value="7132."> Variation des stocks de biens produits</option>
- <option value=" 71321."> Variation des stocks de produits finis</option>
- <option value=" 71322."> Variation des stocks de produits intermédiaires</option>
- <option value=" 71327."> Variation des stocks de produits résiduels</option>
- <option value="7134."> Variation des stocks de services en cours</option>
- <option value="71341."> Variation des stocks de travaux en cours</option>
- <option value=" 71342."> Variation des stocks d'études en cours</option>
- <option value=" 71343."> Variation des stocks de prestations en cours</option>
- <option value="714."> Immobilisations produites par l’entreprise pour elle même</option>
- <option value="7141."> Immobilisation en non valeurs produite</option>
- <option value="7142."> Immobilisations incorporelles produites</option>
- <option value="7143."> Immobilisations corporelles produites</option>
- <option value="7148."> Immobilisations produites des exercices antérieurs</option>
- <option value="716."> Subventions d’exploitation</option>
- <option value="7161."> Subventions d’exploitations reçues de l’exercice</option>
- <option value="7168."> Subventions d’exploitation reçues des exercices antérieurs</option>
- <option value="718."> Autres produits d’exploitation</option>
- <option value="7181."> Jetons de présence reçus</option>
- <option value="7182."> Revenus des immeubles non affectés à l’exploitation</option>
- <option value="7185."> Profits sur opérations faites en commun</option>
- <option value="7186."> Transfert de pertes sur opérations faites en commun</option>
- <option value="7188."> Autres produits d’exploitation des exercices antérieurs</option>
- <option value="719."> Reprise d’exploitation, transferts de charges</option>
- <option value="7191."> Reprises sur amortissements de l’immobilisation en non valeurs</option>
- <option value="7192."> Reprises sur amortissements des immobilisations incorporelles</option>
- <option value="7193."> Reprises sur amortissements des immobilisations corporelles</option>
- <option value="7194."> Reprises sur provisions pour dépréciation des immobilisations</option>
- <option value="7195."> Reprises sur provisions pour risques et charges</option>
- <option value="7196."> Reprises sur provisions pour dépréciation de l’actif circulant</option>
- <option value="7197."> Transferts des charges d’exploitation</option>
- <option value="71971."> T.C.E - Achats de marchandises</option>
- <option value=" 71972."> T.C.E - Achats consommés de matières et fournitures</option>
- <option value=" 71973."> T.C.E - Autres charges externes</option>
- <option value=" 71975."> T.C.E - Impôts et taxes</option>
- <option value=" 71976."> T.C.E - Charges de personnel</option>
- <option value=" 71978."> T.C.E - Autres charges d'exploitation</option>
- <option value="7198."> Reprises sur amortissements et provisions des exercices antérieurs</option>
- <option value="71981."> Reprises sur amortissements des exercices antérieurs</option>
- <option value=" 71984."> Reprises sur provisions des exercices antérieurs</option>
- <option value="73."> Produits financiers</option>
- <option value="732."> Produits des titres de participation et des autres titres immobilisés</option>
- <option value="7321."> Revenus des titres de participation</option>
- <option value="7325."> Revenus des titres immobilisés</option>
- <option value="7328."> Produits des titres de participation et des autres titres immobilisés des exercices antérieurs</option>
- <option value="733."> Gains de change</option>
- <option value="7331."> Gains de change propres à l’exercice</option>
- <option value="7338."> Gains de change des exercices antérieurs</option>
- <option value="738."> Intérêts et autres produits financiers</option>
- <option value="7381."> Intérêts et produits assimilés</option>
- <option value="73811."> Intérêts des prêts</option>
- <option value=" 73813."> Revenus des autres créances financières</option>
- <option value="7383."> Revenus des créances rattachées à des participations</option>
- <option value="7384."> Revenus des titres et valeurs de placement</option>
- <option value="7385."> Produits nets sur cessions de titres et valeurs de placement</option>
- <option value="7386."> Escomptes obtenus</option>
- <option value="7388."> Intérêts et autres produits financiers des exercices antérieurs</option>
- <option value="739."> Reprises financières, transferts de charges</option>
- <option value="7391."> Reprises sur amortissements des primes de remboursement des obligations</option>
- <option value="7392."> Reprises sur provisions pour dépréciation des immobilisations financières</option>
- <option value="7393."> Reprises sur provisions pour risques et charges financières</option>
- <option value="7394."> Reprise sur provisions pour dépréciation des titres et valeurs de placement</option>
- <option value="7396."> Reprises sur provisions pour dépréciation des comptes de trésorerie</option>
- <option value="7397."> Transfert de charges financières</option>
- <option value=" 73971."> Transfert - Charges d'intérêts</option>
- <option value=" 73973."> Transfert - Pertes de change</option>
- <option value=" 73978."> Transfert - Autres charges financières</option>
- <option value="7398."> Reprises sur dotations financières des exercices antérieurs</option>
- <option value="75."> Produits non courants</option>
- <option value="751."> Produits des cessions d’immobilisations</option>
- <option value="7512."> Produits des cessions des immobilisations incorporelles</option>
- <option value="7513."> Produits des cessions des immobilisations corporelles</option>
- <option value="7514."> Produits des cessions des immobilisations financières (droits de propriété)</option>
- <option value="7518."> Produits des cessions des immobilisations des exercices antérieurs</option>
- <option value="756."> Subventions d’équilibre</option>
- <option value="7561."> Subventions d’équilibre reçues de l’exercice</option>
- <option value="7568."> Subventions d’équilibre reçues des exercices antérieurs</option>
- <option value="757."> Reprise sur subventions d’investissements</option>
- <option value="7577."> Reprises sur subventions d’investissement de l’exercice</option>
- <option value="7578."> Reprises sur subventions d’investissement des exercices antérieurs</option>
- <option value="758."> Autres produits non courants</option>
- <option value="7581."> Pénalités et dédits reçus</option>
- <option value=" 75811."> Pénalités reçues sur marchés</option>
- <option value=" 75812."> Dédits reçus</option>
- <option value="7582."> Dégrèvement d’impôts (autres qu’impôts sur les résultats)</option>
- <option value="7585."> Rentrées sur créances soldées</option>
- <option value="7586."> Dons, libéralités et lots reçus</option>
- <option value="75861."> Dons</option>
- <option value=" 75862."> Libéralités</option>
- <option value=" 75863."> Lots</option>
- <option value="7588."> Autres produits non courants des exercices antérieurs</option>
- <option value="759."> Reprises non courantes, transferts de charges</option>
- <option value="7591."> Reprises non courantes sur amortissements exceptionnels des immobilisations</option>
- <option value="75911."> R.A.E de l'immobilisation en non valeurs</option>
- <option value=" 75912."> R.A.E des immobilisations incorporelles</option>
- <option value=" 75913."> R.A.E des immobilisations corporelles</option>
- <option value="7594."> Reprises non courantes sur provisions réglementées</option>
- <option value=" 75941."> Reprises sur amortissements dérogatoires</option>
- <option value=" 75942."> Reprises sur plus-values en instance d'imposition</option>
- <option value=" 75944."> Reprises sur provisions pour investissements</option>
- <option value=" 75945."> Reprises sur provisions pour reconstitution de gisements</option>
- <option value=" 75946."> Reprises sur provisions pour acquisition et construction de logements</option>
- <option value="7595."> Reprises non courantes sur provisions pour risques et charges</option>
- <option value="75955."> Reprises sur provisions pour risques et charges durables</option>
- <option value=" 75957."> Reprises sur provisions pour risques et charges momentanés</option>
- <option value="7596."> Reprises non courantes sur provisions pour dépréciation</option>
- <option value=" 75962."> R.N.C sur provisions pour dépréciation de l'actif immobilisé</option>
- <option value=" 75963."> R.N.C sur provisions pour dépréciation de l'actif circulant</option>
- <option value="7597."> Transferts de charges non courantes</option>
- <option value="7598."> Reprises non courantes des exercices antérieurs</option>
+                 <option value="1111."> Capital social</option>
+                 <option value="1112."> Fonds de dotation</option>
+                 <option value="1117."> Capital personnel</option>
 
-            </datalist>
-
+</datalist>
             <label>Montant HT :</label><input type="number" id="ht-achat">`;
     }
     zone.innerHTML = html;
 }
 
+let numeroChrono = 1;
+
 function enregistrerAchat() {
-    const j = document.getElementById("journal-achat").value;
-    const d = document.getElementById("date-achat")?.value || "";
-    const f = document.getElementById("fournisseur-achat")?.value || "-";
-    const c = document.getElementById("compte-comptable")?.value || "-";
+    const journal = document.getElementById("journal-achat").value;
+    const date = document.getElementById("date-achat")?.value || "";
+    const fournisseur = document.getElementById("fournisseur-achat")?.value || "-";
+    const numFacture = document.getElementById("num-facture")?.value || "";
+    const compte = document.getElementById("compte-comptable")?.value || "-";
     const ht = parseFloat(document.getElementById("ht-achat")?.value) || 0;
-    const taux = parseFloat(document.getElementById("tva-achat")?.value) || 0;
-    const tva = ht * (taux / 100);
+    const tauxTVA = parseFloat(document.getElementById("tva-achat")?.value) || 0;
+    const tva = ht * (tauxTVA / 100);
     const ttc = ht + tva;
-    if (!j || !d || !ht) { alert("Merci de remplir les champs obligatoires."); return; }
+
+    if (!journal || !date || !ht) {
+        alert("Merci de remplir les champs obligatoires.");
+        return;
+sauvegarderDonnees();
+    }
+
+    const numPiece = "P" + String(numeroChrono).padStart(4, "0");
+    numeroChrono++;
 
     const tb = document.querySelector("#table-achats tbody");
     const row = tb.insertRow();
-    [j,d,f,c,ht.toFixed(2),taux+"%",ttc.toFixed(2)].forEach(v => row.insertCell().innerText=v);
+
+    row.insertCell().innerText = numPiece;
+    row.insertCell().innerText = journal;
+    row.insertCell().innerText = date;
+    row.insertCell().innerText = fournisseur;
+    row.insertCell().innerText = (journal === "Achats" || journal === "Ventes") ? numFacture : "-";
+    row.insertCell().innerText = compte;
+    row.insertCell().innerText = ht.toFixed(2);
+    row.insertCell().innerText = tauxTVA ? tauxTVA + "%" : "-";
+    row.insertCell().innerText = ttc.toFixed(2);
+
     const cellAct = row.insertCell();
     cellAct.innerHTML = `
-        <button class="btn-blue" onclick="modifierFacture(this)">Modifier</button>
-        <button class="btn-red" onclick="supprimerFacture(this)">Supprimer</button>
-        <button class="btn-yellow" onclick="validerFacture(this)">Valider</button>`;
-    sauvegarderLocal();
-}
-
-function modifierFacture(btn) {
-    const tr = btn.closest("tr");
-    const cells = tr.querySelectorAll("td");
-    if (tr.classList.contains("validated")) return alert("Facture validée non modifiable.");
-    document.getElementById("journal-achat").value = cells[0].innerText;
-    afficherChamps();
-    document.getElementById("date-achat").value = cells[1].innerText;
-    document.getElementById("fournisseur-achat").value = cells[2].innerText;
-    document.getElementById("compte-comptable").value = cells[3].innerText;
-    document.getElementById("ht-achat").value = cells[4].innerText;
-    document.getElementById("tva-achat").value = parseFloat(cells[5].innerText) || "";
-    tr.remove();
-    sauvegarderLocal();
-}
-
-function supprimerFacture(btn) {
-    const tr = btn.closest("tr");
-    if (tr.classList.contains("validated")) return alert("Facture validée non supprimable.");
-    tr.remove();
-    sauvegarderLocal();
+        <button class="btn-blue" onclick="modifierFacture(this)">✏️</button>
+        <button class="btn-red" onclick="supprimerFacture(this)">🗑️</button>
+        <button class="btn-yellow" onclick="validerFacture(this)">✔️</button>
+    `;
 }
 
 function validerFacture(btn) {
     const tr = btn.closest("tr");
-    const d = tr.cells[1].innerText;
-    const j = tr.cells[0].innerText;
-    const c = tr.cells[3].innerText;
-    const ht = parseFloat(tr.cells[4].innerText);
-    const taux = parseFloat(tr.cells[5].innerText);
-    const tva = ht * (taux / 100);
-    const ttc = ht + tva;
+    tr.classList.add("validated");
+    tr.querySelectorAll("button").forEach(b => b.disabled = true);
+
+    const numPiece = tr.cells[0].innerText;
+    const journal = tr.cells[1].innerText;
+    const date = tr.cells[2].innerText;
+    const fournisseur = tr.cells[3].innerText;
+    const numFacture = tr.cells[4].innerText;
+    const compte = tr.cells[5].innerText;
+    const ht = parseFloat(tr.cells[6].innerText);
+    const tva = (tr.cells[7].innerText.includes("%")) ? (Math.abs(ht) * parseFloat(tr.cells[7].innerText) / 100) : 0;
+    const ttc = Math.abs(ht) + tva;
 
     let lignes = [];
-    if (j === "Achats") lignes = [
-       {cpt:"4411",lib:"Fournisseur",debit:"",credit:ttc},      
-       {cpt:"3455",lib:"TVA déductible",debit:tva,credit:""},
-       {cpt:c,lib:"Achat",debit:ht,credit:""}
-        
-    ];
-    else if (j === "Ventes") lignes = [
-        {cpt:"3421",lib:"Client",debit:ttc,credit:""},
-        {cpt:"4455",lib:"TVA collectée",debit:"",credit:tva},
-        {cpt:c,lib:"Vente",debit:"",credit:ht}
-    ];
-    else if (j === "Banque") lignes = [
-        {cpt:c,lib:"Compte",debit:ht,credit:""},
-        {cpt:"5141",lib:"Banque",debit:"",credit:ht}
-    ];
-    else if (j === "Caisse") lignes = [
-            {cpt:c,lib:"Compte",debit:ht,credit:""},
-            {cpt:"5161",lib:"Caisses",debit:"",credit:ht}
-    ];
-    else if (j === "OD") {
-        const autre = prompt("Entrez le compte de contrepartie :");
+
+    // ✅ structure classique selon le journal
+    if (journal === "Achats") {
         lignes = [
-            {cpt:c,lib:"OD Débit",debit:ht,credit:""},
-            {cpt:autre,lib:"OD Crédit",debit:"",credit:ht}
+            { compte: "4411", debit: "", credit: ttc.toFixed(2) },
+            { compte: compte, debit: Math.abs(ht).toFixed(2), credit: "" },
+            { compte: "3455", debit: tva.toFixed(2), credit: "" }
+        ];
+    } else if (journal === "Ventes") {
+        lignes = [
+            { compte: "3421", debit: ttc.toFixed(2), credit: "" },
+            { compte: "4455", debit: "", credit: tva.toFixed(2) },
+            { compte: compte, debit: "", credit: Math.abs(ht).toFixed(2) }
+        ];
+    } else if (journal === "Banque") {
+        lignes = [
+            { compte: compte, debit: Math.abs(ht).toFixed(2), credit: "" },
+            { compte: "5141", debit: "", credit: Math.abs(ht).toFixed(2) }
+        ];
+    } else if (journal === "Caisse") {
+        lignes = [
+            { compte: compte, debit: Math.abs(ht).toFixed(2), credit: "" },
+            { compte: "5161", debit: "", credit: Math.abs(ht).toFixed(2) }
+        ];
+    } else if (journal === "OD") {
+        lignes = [
+            { compte: compte, debit: Math.abs(ht).toFixed(2), credit: "" },
+            { compte: "Contrepartie", debit: "", credit: Math.abs(ht).toFixed(2) }
         ];
     }
 
+    // ✅ condition d'inversion si montant HT est négatif
+    if (ht < 0) {
+        lignes = lignes.map(l => ({
+            compte: l.compte,
+            debit: l.credit,
+            credit: l.debit
+        }));
+    }
+
+    // insertion dans le journal
     const tE = document.querySelector("#table-ecritures tbody");
-    lignes.forEach(l=>{
-        const r=tE.insertRow();
-        r.insertCell().innerText=d;
-        r.insertCell().innerText=l.cpt;
-        r.insertCell().innerText=l.lib;
-        r.insertCell().innerText=l.debit?l.debit.toFixed(2):"";
-        r.insertCell().innerText=l.credit?l.credit.toFixed(2):"";
+    lignes.forEach(l => {
+        const r = tE.insertRow();
+        r.insertCell().innerText = numPiece;
+        r.insertCell().innerText = journal;
+        r.insertCell().innerText = date;
+        r.insertCell().innerText = fournisseur;
+        r.insertCell().innerText = numFacture;
+        r.insertCell().innerText = l.compte;
+        r.insertCell().innerText = l.debit;
+        r.insertCell().innerText = l.credit;
     });
-
-    tr.classList.add("validated");
-    tr.querySelectorAll("button").forEach(b=>b.disabled=true);
-    sauvegarderLocal();
+sauvegarderDonnees();
 }
 
-function filtrerFactures(){
-    const j=document.getElementById("filtre-journal").value.toLowerCase();
-    const r=document.getElementById("recherche-facture").value.toLowerCase();
-    document.querySelectorAll("#table-achats tbody tr").forEach(tr=>{
-        const txt=tr.innerText.toLowerCase();
-        tr.style.display=(txt.includes(r)&&(j==""||tr.cells[0].innerText.toLowerCase()==j))?"":"none";
-    });
-}
 function filtrerJournal(){
     const r=document.getElementById("recherche-journal").value.toLowerCase();
     document.querySelectorAll("#table-ecritures tbody tr").forEach(tr=>{
         tr.style.display=tr.innerText.toLowerCase().includes(r)?"":"none";
     });
 }
-
-function sauvegarderLocal(){
-    const factures=Array.from(document.querySelectorAll("#table-achats tbody tr")).map(tr=>Array.from(tr.cells).map(td=>td.innerText));
-    const ecritures=Array.from(document.querySelectorAll("#table-ecritures tbody tr")).map(tr=>Array.from(tr.cells).map(td=>td.innerText));
-    localStorage.setItem("factures",JSON.stringify(factures));
-    localStorage.setItem("ecritures",JSON.stringify(ecritures));
-}
-function chargerLocal(){
-    const factures=JSON.parse(localStorage.getItem("factures")||"[]");
-    const ecritures=JSON.parse(localStorage.getItem("ecritures")||"[]");
-    const tf=document.querySelector("#table-achats tbody");
-    const te=document.querySelector("#table-ecritures tbody");
-    tf.innerHTML=""; te.innerHTML="";
-    factures.forEach(l=>{
-        const r=tf.insertRow();
-        l.forEach((v,i)=>{
-            if(i<7) r.insertCell().innerText=v;
-        });
-        const cellAct=r.insertCell();
-        cellAct.innerHTML=`<button class="btn-blue" onclick="modifierFacture(this)">Modifier</button>
-        <button class="btn-red" onclick="supprimerFacture(this)">Supprimer</button>
-        <button class="btn-yellow" onclick="validerFacture(this)">Valider</button>`;
-        if(l.join("").includes("validated")) r.classList.add("validated");
-    });
-    ecritures.forEach(l=>{
-        const r=te.insertRow();
-        l.forEach(v=>r.insertCell().innerText=v);
+function filtrerFactures() {
+    const filtre = document.getElementById("filtre-journal").value;
+    const recherche = document.getElementById("recherche-facture").value.toLowerCase();
+    document.querySelectorAll("#table-achats tbody tr").forEach(tr=>{
+        const txt = tr.innerText.toLowerCase();
+        const journalCell = tr.cells[1] ? tr.cells[1].innerText : "";
+        const matchesJournal = (!filtre) || (journalCell === filtre);
+        tr.style.display = (matchesJournal && txt.includes(recherche)) ? "" : "none";
     });
 }
 
-function exporterExcel(){
-    const wb=XLSX.utils.book_new();
-    const fact=XLSX.utils.table_to_sheet(document.getElementById("table-achats"));
-    const ecr=XLSX.utils.table_to_sheet(document.getElementById("table-ecritures"));
-    XLSX.utils.book_append_sheet(wb,fact,"Factures");
-    XLSX.utils.book_append_sheet(wb,ecr,"Ecritures");
-    XLSX.writeFile(wb,"donnees_comptables.xlsx");
+function filtrerEcritures() {
+    const recherche = document.getElementById("recherche-journal").value.toLowerCase();
+    const tbody = document.querySelector("#table-ecritures tbody");
+    Array.from(tbody.rows).forEach(r => {
+        const texte = r.cells[1].innerText.toLowerCase() + " " + r.cells[2].innerText.toLowerCase();
+        r.style.display = texte.includes(recherche) ? "" : "none";
+    });
 }
 
-function importerExcel(ev){
-    const f=ev.target.files[0];
-    const r=new FileReader();
-    r.onload=e=>{
-        const data=new Uint8Array(e.target.result);
-        const wb=XLSX.read(data,{type:"array"});
-        const fct=XLSX.utils.sheet_to_json(wb.Sheets["Factures"],{header:1});
-        const ecr=XLSX.utils.sheet_to_json(wb.Sheets["Ecritures"],{header:1});
-        const tf=document.querySelector("#table-achats tbody");
-        const te=document.querySelector("#table-ecritures tbody");
-        tf.innerHTML=""; te.innerHTML="";
-        fct.slice(1).forEach(l=>{
-            const r=tf.insertRow();
-            l.forEach((v,i)=>{if(i<7)r.insertCell().innerText=v;});
-            const cellAct=r.insertCell();
-            cellAct.innerHTML=`<button class="btn-blue" onclick="modifierFacture(this)">Modifier</button>
-            <button class="btn-red" onclick="supprimerFacture(this)">Supprimer</button>
-            <button class="btn-yellow" onclick="validerFacture(this)">Valider</button>`;
+function supprimerFacture(btn) {
+    const tr = btn.closest("tr");
+    tr.remove();
+    sauvegarderDonnees();
+}
+// ============================ SAUVEGARDE LOCALE ============================
+
+// Sauvegarde toutes les données du tableau dans le LocalStorage
+function sauvegarderDonnees() {
+    const factures = [];
+    document.querySelectorAll("#table-achats tbody tr").forEach(tr => {
+        const tds = tr.querySelectorAll("td");
+        factures.push({
+            numPiece: tds[0].innerText,
+            journal: tds[1].innerText,
+            date: tds[2].innerText,
+            fournisseur: tds[3].innerText,
+            numFacture: tds[4].innerText,
+            compte: tds[5].innerText,
+            ht: tds[6].innerText,
+            tva: tds[7].innerText,
+            ttc: tds[8].innerText,
+            validee: tr.classList.contains("validated")
         });
-        ecr.slice(1).forEach(l=>{
-            const r=te.insertRow(); l.forEach(v=>r.insertCell().innerText=v);
+    });
+
+    const ecritures = [];
+    document.querySelectorAll("#table-ecritures tbody tr").forEach(tr => {
+        const tds = tr.querySelectorAll("td");
+        ecritures.push({
+            numPiece: tds[0].innerText,
+            journal: tds[1].innerText,
+            date: tds[2].innerText,
+            fournisseur: tds[3].innerText,
+            numFacture: tds[4].innerText,
+            compte: tds[5].innerText,
+            debit: tds[6].innerText,
+            credit: tds[7].innerText
         });
-        sauvegarderLocal();
-    };
-    r.readAsArrayBuffer(f);
+    });
+
+    const data = { factures, ecritures, numeroChrono };
+    localStorage.setItem("comptaData", JSON.stringify(data));
 }
 
-window.onload=chargerLocal;
+// Recharge les données sauvegardées depuis le LocalStorage
+function chargerDonnees() {
+    const data = JSON.parse(localStorage.getItem("comptaData") || "{}");
+    if (!data.factures) return;
+
+    numeroChrono = data.numeroChrono || 1;
+
+    const tb = document.querySelector("#table-achats tbody");
+    const tE = document.querySelector("#table-ecritures tbody");
+
+    data.factures.forEach(f => {
+        const row = tb.insertRow();
+        row.insertCell().innerText = f.numPiece;
+        row.insertCell().innerText = f.journal;
+        row.insertCell().innerText = f.date;
+        row.insertCell().innerText = f.fournisseur;
+        row.insertCell().innerText = f.numFacture;
+        row.insertCell().innerText = f.compte;
+        row.insertCell().innerText = f.ht;
+        row.insertCell().innerText = f.tva;
+        row.insertCell().innerText = f.ttc;
+
+        const cellAct = row.insertCell();
+        cellAct.innerHTML = `
+            <button class="btn-blue" onclick="modifierFacture(this)" ${f.validee ? "disabled" : ""}>✏️</button>
+            <button class="btn-red" onclick="supprimerFacture(this)" ${f.validee ? "disabled" : ""}>🗑️</button>
+            <button class="btn-yellow" onclick="validerFacture(this)" ${f.validee ? "disabled" : ""}>✔️</button>
+        `;
+        if (f.validee) row.classList.add("validated");
+    });
+
+    data.ecritures.forEach(e => {
+        const r = tE.insertRow();
+        r.insertCell().innerText = e.numPiece;
+        r.insertCell().innerText = e.journal;
+        r.insertCell().innerText = e.date;
+        r.insertCell().innerText = e.fournisseur;
+        r.insertCell().innerText = e.numFacture;
+        r.insertCell().innerText = e.compte;
+        r.insertCell().innerText = e.debit;
+        r.insertCell().innerText = e.credit;
+    });
+}
+
+// Charger les données dès le chargement de la page
+window.addEventListener("load", chargerDonnees);
+// ============================ EXPORT EXCEL ============================
+function exporterExcel() {
+    const wb = XLSX.utils.book_new();
+
+    // ======= Onglet Factures =======
+    const tableFactures = document.querySelector("#table-achats");
+    const wsFactures = XLSX.utils.table_to_sheet(tableFactures);
+    XLSX.utils.book_append_sheet(wb, wsFactures, "Factures");
+
+    // ======= Onglet Journal =======
+    const tableJournal = document.querySelector("#table-ecritures");
+    const wsJournal = XLSX.utils.table_to_sheet(tableJournal);
+    XLSX.utils.book_append_sheet(wb, wsJournal, "Journal");
+
+    // ======= Téléchargement du fichier =======
+    const nomFichier = "Comptabilite_" + new Date().toISOString().slice(0,10) + ".xlsx";
+    XLSX.writeFile(wb, nomFichier);
+}
 </script>
 </body>
 </html>
-
 Copyright © MAZZAINE
